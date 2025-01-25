@@ -7,8 +7,8 @@ class DateUtils {
     companion object {
         private fun convert(
             dateTime: String,
-            inputFormat: String,
-            outputFormat: String,
+            inputFormat: String? = "yyyy-MM-dd HH:mm:ss" ,
+            outputFormat: String? = "dd MMM yyyy HH:mm",
             locale: Locale = Locale("id", "ID")
         ): String {
             return try {
@@ -23,9 +23,7 @@ class DateUtils {
 
         fun formatToId(date: String) : String{
            return convert(
-                dateTime = date,
-                inputFormat = "yyyy-MM-dd HH:mm:ss",
-                outputFormat = "dd MMM yyyy HH:mm"
+                dateTime = date
             )
         }
 

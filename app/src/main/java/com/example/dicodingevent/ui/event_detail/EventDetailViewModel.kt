@@ -40,7 +40,7 @@ class EventDetailViewModel : ViewModel() {
                     _event.value = response.body()?.event ?: Event()
                 }  else {
                     _errorMessage.value = response.message()
-                    Log.e(TAG, "onFailure: ${response.message()}")
+                    Log.e(TAG, "onFailure ${response.body()?.commonResponse?.error}: ${response.message()}")
                 }
             }
 

@@ -53,11 +53,31 @@
             android:paddingTop="4dp" />
 
         <TextView
-            android:id="@+id/tv_event_time"
+            android:id="@+id/tv_event_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/tv_event_owner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/tv_event_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_event_category"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/tv_event_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_event_city"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingTop="4dp" />

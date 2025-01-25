@@ -82,6 +82,9 @@ class EventDetailFragment : Fragment() {
         binding.apply {
             tvEventTitle.text = event.name
             tvEventOwner.text = event.ownerName
+            tvEventCategory.text = event.category
+            tvEventCity.text = event.cityName
+            tvEventDescription.text = event.summary
             tvEventTime.text = "${DateUtils.formatToId(event.beginTime ?: "")} - ${DateUtils.formatToId(event.endTime ?: "")}"
             tvEventQuota.text = "Quota: ${event.registrants}/${event.quota}"
             tvEventDescription.text = HtmlCompat.fromHtml(event.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)

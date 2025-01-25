@@ -1,4 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0">
+      <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.upcoming.UpcomingFragment upcomingViewModel$delegate" />
+      <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.event_detail.EventDetailFragment viewModel$delegate" />
+      <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.finished.FinishedFragment finishedViewModel$delegate" />
+    </entry_points>
+    <pattern value="com.example.dicodingevent.data.response.event.ListEventResponse" method="ListEventResponse" />
+    <pattern value="com.example.dicodingevent.ui.home.HomeViewModel" method="clearErrorMessage" />
+    <pattern value="com.example.dicodingevent.ui.home.HomeViewModel" method="getUpcomingEvents" />
+    <pattern value="com.example.dicodingevent.ui.home.HomeViewModel" method="getFinishedEvents" />
+    <pattern value="com.example.dicodingevent.ui.home.HomeViewModel" />
+    <pattern value="com.example.dicodingevent.shared.EventType" />
+    <pattern value="com.example.dicodingevent.shared.EventType" method="EventType" />
+    <pattern value="com.example.dicodingevent.ui.event_detail.EventDetailViewModel" method="clearErrorMessage" />
+    <pattern value="com.example.dicodingevent.data.response.event.EventDetailResponse" method="EventDetailResponse" />
+    <pattern value="com.example.dicodingevent.data.response.CommonResponse" method="CommonResponse" />
+    <pattern value="com.example.dicodingevent.ui.finished.FinishedViewModel" method="clearErrorMessage" />
+    <pattern value="com.example.dicodingevent.ui.upcoming.UpcomingViewModel" method="clearErrorMessage" />
+    <pattern value="com.example.dicodingevent.ui.upcoming.UpcomingViewModel" />
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

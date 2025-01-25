@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
     private fun observeViewModel() {
         homeViewModel.upcomingEvents.observe(viewLifecycleOwner) {
             it?.let { events ->
-                if (events.isEmpty())  binding.tvUpcomingEvents.text = "Upcoming Event" else binding.tvUpcomingEvents.text = "No Upcoming Event Available"
+                if (events.isEmpty())  binding.tvUpcomingEvents.text = getString(R.string.no_upcoming_event_available) else binding.tvUpcomingEvents.text = getString(R.string.upcoming_events)
                 upcomingAdapter.submitList(events)
             }
         }

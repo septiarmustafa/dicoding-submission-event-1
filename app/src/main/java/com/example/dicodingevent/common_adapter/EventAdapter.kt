@@ -23,27 +23,27 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
                 parent,
                 false
             )
-            EventViewHolder.FinishedViewHolder(binding, onItemClick)
+            EventViewHolder.FinishedViewHolder(binding)
         } else {
             val binding = ItemEventHorizontalBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-            EventViewHolder.UpcomingViewHolder(binding, onItemClick)
+            EventViewHolder.UpcomingViewHolder(binding)
         }
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClick)
     }
 
     sealed class EventViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        abstract fun bind(event: Event)
+        abstract fun bind(event: Event, onClick: (Event) -> Unit)
 
-        class FinishedViewHolder(private val binding: ItemEventVerticalBinding, private val onItemClick: (Event) -> Unit
+        class FinishedViewHolder(private val binding: ItemEventVerticalBinding
         ) : EventViewHolder(binding) {
-            override fun bind(event: Event) {
+            override fun bind(event: Event, onClick: (Event) -> Unit) {
                 binding.tvEventTitle.text = event.name
                 binding.tvEventDescription.text = event.summary
                 Glide.with(binding.root.context)
@@ -52,13 +52,13 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
                     .into(binding.ivEventImage)
 
                 itemView.setOnClickListener {
-                    onItemClick(event)
+                    onClick(event)
                 }
             }
         }
 
-        class UpcomingViewHolder(private val binding: ItemEventHorizontalBinding,  private val onItemClick: (Event) -> Unit ) : EventViewHolder(binding) {
-            override fun bind(event: Event) {
+        class UpcomingViewHolder(private val binding: ItemEventHorizontalBinding) : EventViewHolder(binding) {
+            override fun bind(event: Event, onClick: (Event) -> Unit) {
                 binding.tvEventTitle.text = event.name
                 binding.tvEventDescription.text = event.summary
                 Glide.with(binding.root.context)
@@ -67,7 +67,7 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
                     .into(binding.ivEventImage)
 
                 itemView.setOnClickListener {
-                    onItemClick(event)
+                    onClick(event)
                 }
             }
         }

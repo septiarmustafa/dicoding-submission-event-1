@@ -9,9 +9,9 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="dicoding_event">Dicoding Event</string>
     <string name="upcoming_events">Upcoming Events</string>
-    <string name="upcoming_events_not_found">No Upcoming Events Available</string>
     <string name="finished_events">Finished Events</string>
     <string name="register">Register</string>
     <string name="search_events">Search events</string>
     <string name="no_data_available">No data available</string>
+    <string name="no_upcoming_event_available">No Upcoming Event Available</string>
 </resources>
