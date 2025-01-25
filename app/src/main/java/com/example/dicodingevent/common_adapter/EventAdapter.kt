@@ -41,8 +41,7 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
     sealed class EventViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
         abstract fun bind(event: Event, onClick: (Event) -> Unit)
 
-        class FinishedViewHolder(private val binding: ItemEventVerticalBinding
-        ) : EventViewHolder(binding) {
+        class FinishedViewHolder(private val binding: ItemEventVerticalBinding) : EventViewHolder(binding) {
             override fun bind(event: Event, onClick: (Event) -> Unit) {
                 binding.tvEventTitle.text = event.name
                 binding.tvEventDescription.text = event.summary

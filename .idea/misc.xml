@@ -5,6 +5,7 @@
       <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.upcoming.UpcomingFragment upcomingViewModel$delegate" />
       <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.event_detail.EventDetailFragment viewModel$delegate" />
       <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.finished.FinishedFragment finishedViewModel$delegate" />
+      <entry_point TYPE="field" FQNAME="com.example.dicodingevent.ui.home.HomeFragment homeViewModel$delegate" />
     </entry_points>
     <pattern value="com.example.dicodingevent.data.response.event.ListEventResponse" method="ListEventResponse" />
     <pattern value="com.example.dicodingevent.ui.home.HomeViewModel" method="clearErrorMessage" />
@@ -19,6 +20,9 @@
     <pattern value="com.example.dicodingevent.ui.finished.FinishedViewModel" method="clearErrorMessage" />
     <pattern value="com.example.dicodingevent.ui.upcoming.UpcomingViewModel" method="clearErrorMessage" />
     <pattern value="com.example.dicodingevent.ui.upcoming.UpcomingViewModel" />
+    <pattern value="com.example.dicodingevent.ui.finished.FinishedFragment" />
+    <pattern value="com.example.dicodingevent.ui.home.HomeFragment" />
+    <pattern value="com.example.dicodingevent.ui.upcoming.UpcomingFragment" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
