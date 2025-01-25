@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Dicoding Event</string>
+    <string name="title_home">Home</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_finished">Finished</string>
+    <string name="subtitle_upcoming">Recomendation Event For You!</string>
+    <string name="title_upcoming_event">Dicoding Event</string>
+    <string name="event_image">event_image</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="dicoding_event">Dicoding Event</string>
+    <string name="upcoming_events">Upcoming Events</string>
+    <string name="upcoming_events_not_found">No Upcoming Events Available</string>
+    <string name="finished_events">Finished Events</string>
+    <string name="register">Register</string>
+    <string name="search_events">Search events</string>
+    <string name="no_data_available">No data available</string>
+</resources>
