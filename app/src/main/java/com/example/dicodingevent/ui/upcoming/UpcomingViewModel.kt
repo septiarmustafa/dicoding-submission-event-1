@@ -32,7 +32,7 @@ class UpcomingViewModel : ViewModel() {
     }
 
     fun getEvent() {
-        _isLoading.value = true
+        _isLoading.postValue(true)
 
         val client = ApiConfig.getApiService().getEvent(EventType.UPCOMING.value)
         client.enqueue(object : Callback<ListEventResponse> {
@@ -40,7 +40,7 @@ class UpcomingViewModel : ViewModel() {
                 call: Call<ListEventResponse>,
                 response: Response<ListEventResponse>
             ) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
                     _listEvent.value = response.body()?.listEvents ?: emptyList()
                 }  else {
@@ -50,7 +50,7 @@ class UpcomingViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ListEventResponse>, t: Throwable) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 _errorMessage.value = "Failed to fetch data"
                 Log.e(TAG, "onFailure: ${t.message}")
             }

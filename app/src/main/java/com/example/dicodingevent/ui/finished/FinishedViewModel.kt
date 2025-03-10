@@ -32,7 +32,7 @@ class FinishedViewModel : ViewModel() {
     }
 
     fun getEvent(query: String? = null) {
-        _isLoading.value = true
+        _isLoading.postValue(true)
 
         val client = ApiConfig.getApiService().getEvent(EventType.FINISHED.value, q = query)
         client.enqueue(object : Callback<ListEventResponse> {
@@ -40,7 +40,7 @@ class FinishedViewModel : ViewModel() {
                 call: Call<ListEventResponse>,
                 response: Response<ListEventResponse>
             ) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
                     _listEvent.value = response.body()?.listEvents ?: emptyList()
                 }  else {
@@ -50,7 +50,7 @@ class FinishedViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ListEventResponse>, t: Throwable) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 _errorMessage.value = "Sorry, the request cannot be processed"
                 Log.e(TAG, "onFailure: ${t.message}")
             }

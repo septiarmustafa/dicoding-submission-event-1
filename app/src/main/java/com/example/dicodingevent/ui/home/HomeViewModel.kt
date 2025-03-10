@@ -41,7 +41,7 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun loadEvents(active: String, liveData: MutableLiveData<List<Event>>) {
-        _isLoading.value = true
+        _isLoading.postValue(true)
 
         val client = ApiConfig.getApiService().getEvent(active, LIMIT_EVENT_HOME)
         client.enqueue(object : Callback<ListEventResponse> {
@@ -49,7 +49,7 @@ class HomeViewModel : ViewModel() {
                 call: Call<ListEventResponse>,
                 response: Response<ListEventResponse>
             ) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
                     liveData.value = response.body()?.listEvents ?: emptyList()
                 } else {
@@ -59,7 +59,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ListEventResponse>, t: Throwable) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 _errorMessage.value = "Sorry, the request cannot be processed"
                 Log.e(TAG, "Error: ${t.message}")
             }
