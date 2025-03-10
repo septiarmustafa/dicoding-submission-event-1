@@ -26,7 +26,7 @@ class EventDetailViewModel : ViewModel() {
     }
 
     fun getEventDetail(eventId: String) {
-        _isLoading.value = true
+        _isLoading.postValue(true)
 
         val client = ApiConfig.getApiService().getEventById(eventId)
         client.enqueue(object : Callback<EventDetailResponse> {
@@ -35,18 +35,19 @@ class EventDetailViewModel : ViewModel() {
                 call: Call<EventDetailResponse>,
                 response: Response<EventDetailResponse>
             ) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
-                    _event.value = response.body()?.event ?: Event()
+                    _event.postValue(response.body()?.event ?: Event())
                 }  else {
-                    _errorMessage.value = response.message()
+                    val errorMsg = response.errorBody()?.string() ?: response.message()
+                    _errorMessage.postValue(errorMsg)
                     Log.e(TAG, "onFailure ${response.body()?.commonResponse?.error}: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<EventDetailResponse>, t: Throwable) {
-                _isLoading.value = false
-                _errorMessage.value = "Sorry, the request cannot be processed"
+                _isLoading.postValue(false)
+                _errorMessage.postValue("Request failed: ${t.localizedMessage}")
                 Log.e(TAG, "onFailure: ${t.message}")
             }
 

@@ -90,6 +90,7 @@ class FinishedFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding?.svEventSearch?.setOnClickListener(null)
         _binding = null
     }
 }

@@ -23,7 +23,7 @@ class EventDetailFragment : Fragment() {
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EventDetailViewModel by viewModels()
-    private lateinit var eventId: String
+    private var eventId: String? = null
 
     companion object {
         const val EVENT_ID_KEY = "EVENT_ID"
@@ -40,10 +40,18 @@ class EventDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        eventId = arguments?.getString(EVENT_ID_KEY) ?: ""
+        eventId = arguments?.getString(EVENT_ID_KEY)
+        eventId?.let {
+            setupObservers()
+            viewModel.getEventDetail(it)
+        } ?:   SharedMethod.showErrorDialog(
+            context = requireContext(),
+            message = "Event ID is missing",
+            customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
+        )
 
         setupObservers()
-        viewModel.getEventDetail(eventId)
+        eventId?.let { viewModel.getEventDetail(it) }
 
     }
 
@@ -70,7 +78,7 @@ class EventDetailFragment : Fragment() {
                 SharedMethod.showErrorDialog(
                     context = requireContext(),
                     message = it,
-                    customEvent = { viewModel.getEventDetail(eventId) }
+                    customEvent = { eventId?.let { it1 -> viewModel.getEventDetail(it1) } }
                 )
                 viewModel.clearErrorMessage()
             }
@@ -88,7 +96,7 @@ class EventDetailFragment : Fragment() {
             tvEventCity.text = event.cityName
             tvEventDescription.text = event.summary
             tvEventTime.text = "${DateUtils.formatToId(event.beginTime ?: "")} - ${DateUtils.formatToId(event.endTime ?: "")}"
-            tvEventQuota.text = "Quota: ${quota - registrants}"
+            tvEventQuota.text =  "Quota: ${quota - registrants}"
             tvEventDescription.text = HtmlCompat.fromHtml(event.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             Glide.with(this@EventDetailFragment)
@@ -100,6 +108,7 @@ class EventDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding?.btnOpenLink?.setOnClickListener(null)
         _binding = null
     }
 
