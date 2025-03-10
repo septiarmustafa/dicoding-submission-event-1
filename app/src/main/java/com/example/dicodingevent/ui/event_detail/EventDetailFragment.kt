@@ -49,10 +49,6 @@ class EventDetailFragment : Fragment() {
             message = "Event ID is missing",
             customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
         )
-
-        setupObservers()
-        eventId?.let { viewModel.getEventDetail(it) }
-
     }
 
     private fun setupObservers() {
