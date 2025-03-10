@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -47,22 +45,24 @@ class EventDetailFragment : Fragment() {
         setupObservers()
         viewModel.getEventDetail(eventId)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-        }
     }
 
     private fun setupObservers() {
-        viewModel.event.observe(viewLifecycleOwner) { event ->
-            event?.let {
-                bindEventData(it)
-                handleEventFinished(it)
-            }
-        }
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             SharedMethod.showLoading(it, binding.progressBar)
+        }
+
+        viewModel.event.observe(viewLifecycleOwner) { event ->
+            event?.let {
+                bindEventData(it)
+                binding.btnOpenLink.setOnClickListener {
+                    event.link?.let {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                        startActivity(intent)
+                    } ?: Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
@@ -80,45 +80,21 @@ class EventDetailFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun bindEventData(event: Event) {
         binding.apply {
+            val quota = event.quota ?: 0
+            val registrants = event.registrants ?: 0
             tvEventTitle.text = event.name
             tvEventOwner.text = event.ownerName
             tvEventCategory.text = event.category
             tvEventCity.text = event.cityName
             tvEventDescription.text = event.summary
             tvEventTime.text = "${DateUtils.formatToId(event.beginTime ?: "")} - ${DateUtils.formatToId(event.endTime ?: "")}"
-            tvEventQuota.text = "Quota: ${event.registrants}/${event.quota}"
+            tvEventQuota.text = "Quota: ${quota - registrants}"
             tvEventDescription.text = HtmlCompat.fromHtml(event.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             Glide.with(this@EventDetailFragment)
                 .load(event.mediaCover)
                 .error(R.drawable.ic_launcher_background)
                 .into(ivEventImage)
-        }
-    }
-
-    private fun handleEventFinished(event: Event) {
-        val isEventFinished = DateUtils.isAfter(event.endTime)
-        binding.btnOpenLink.apply {
-            if (isEventFinished) {
-                setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        androidx.appcompat.R.color.material_grey_600
-                    )
-                )
-                setOnClickListener {
-                    Toast.makeText(context, "The event has ended", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        if (!isEventFinished) {
-            binding.btnOpenLink.setOnClickListener {
-                event.link?.let {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                    startActivity(intent)
-                } ?: Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

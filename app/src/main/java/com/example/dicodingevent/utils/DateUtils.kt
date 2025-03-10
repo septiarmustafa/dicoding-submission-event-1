@@ -25,16 +25,5 @@ class DateUtils {
         fun formatToId(date: String) : String{
            return convert(dateTime = date)
         }
-
-        fun isAfter(endTime: String?): Boolean {
-            return try {
-                val currentTime = System.currentTimeMillis()
-                val format = SimpleDateFormat(DEFAULT_INPUT_FORMAT, Locale.getDefault())
-                val eventEndTime = format.parse(endTime)
-                (eventEndTime?.time ?: 0) <= currentTime
-            } catch (e: Exception) {
-                false
-            }
-        }
     }
 }
