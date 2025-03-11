@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
-import com.example.dicodingevent.data.model.Event
+import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentEventDetailBinding
 import com.example.dicodingevent.shared.SharedMethod
 import com.example.dicodingevent.utils.DateUtils
@@ -49,6 +49,7 @@ class EventDetailFragment : Fragment() {
             message = "Event ID is missing",
             customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
         )
+
     }
 
     private fun setupObservers() {
@@ -58,7 +59,7 @@ class EventDetailFragment : Fragment() {
         }
 
         viewModel.event.observe(viewLifecycleOwner) { event ->
-            event?.let {
+            event?.let { it ->
                 bindEventData(it)
                 binding.btnOpenLink.setOnClickListener {
                     event.link?.let {

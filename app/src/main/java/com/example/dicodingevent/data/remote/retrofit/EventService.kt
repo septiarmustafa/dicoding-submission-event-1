@@ -1,7 +1,7 @@
-package com.example.dicodingevent.data.retrofit
+package com.example.dicodingevent.data.remote.retrofit
 
-import com.example.dicodingevent.data.response.event.EventDetailResponse
-import com.example.dicodingevent.data.response.event.ListEventResponse
+import com.example.dicodingevent.data.remote.response.event.EventDetailResponse
+import com.example.dicodingevent.data.remote.response.event.ListEventResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

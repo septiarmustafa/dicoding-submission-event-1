@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
-import com.example.dicodingevent.data.model.Event
+import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.ItemEventHorizontalBinding
 import com.example.dicodingevent.databinding.ItemEventVerticalBinding
 

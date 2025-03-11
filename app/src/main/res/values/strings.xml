@@ -14,4 +14,7 @@
     <string name="search_events">Search events</string>
     <string name="no_data_available">No data available</string>
     <string name="no_upcoming_event_available">No Upcoming Event Available</string>
+    <string name="favorite">Favorite</string>
+    <string name="setting">Setting</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

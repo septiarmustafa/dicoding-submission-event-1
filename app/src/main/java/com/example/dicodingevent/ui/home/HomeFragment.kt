@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.R
 import com.example.dicodingevent.common_adapter.EventAdapter
-import com.example.dicodingevent.data.model.Event
+import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentHomeBinding
 import com.example.dicodingevent.shared.SharedMethod
 

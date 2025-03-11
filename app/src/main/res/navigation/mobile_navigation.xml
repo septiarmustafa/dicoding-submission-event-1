@@ -43,4 +43,16 @@
             android:name="EVENT_ID"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.dicodingevent.ui.favorite.FavoriteFragment"
+        android:label="Favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.example.dicodingevent.ui.settings.SettingsFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
