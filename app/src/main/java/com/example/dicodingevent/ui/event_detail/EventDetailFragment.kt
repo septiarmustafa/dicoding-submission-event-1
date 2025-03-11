@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
+import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
 import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentEventDetailBinding
 import com.example.dicodingevent.shared.SharedMethod
+import com.example.dicodingevent.ui.favorite.FavoriteViewModel
 import com.example.dicodingevent.utils.DateUtils
 
 class EventDetailFragment : Fragment() {
@@ -23,7 +25,11 @@ class EventDetailFragment : Fragment() {
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EventDetailViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
     private var eventId: String? = null
+    private var isFavorite: Boolean = false
+    private var currentEvent: Event? = null
+
 
     companion object {
         const val EVENT_ID_KEY = "EVENT_ID"
@@ -50,6 +56,21 @@ class EventDetailFragment : Fragment() {
             customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
         )
 
+//        binding.ivLoveButton.setOnClickListener {
+//            currentEvent?.let { event ->
+//                val favoriteEvent = FavoriteEvent(
+//                    event.id ?: -1,
+//                    event.name ?: "",
+//                    event.mediaCover ?: "",
+//                    event.description ?: ""
+//                )
+//                if (isFavorite) {
+//                    favoriteViewModel.removeFavorite(favoriteEvent)
+//                } else {
+//                    favoriteViewModel.addFavorite(favoriteEvent)
+//                }
+//            }
+//        }
     }
 
     private fun setupObservers() {
@@ -61,6 +82,7 @@ class EventDetailFragment : Fragment() {
         viewModel.event.observe(viewLifecycleOwner) { event ->
             event?.let { it ->
                 bindEventData(it)
+                currentEvent = it
                 binding.btnOpenLink.setOnClickListener {
                     event.link?.let {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
@@ -80,6 +102,13 @@ class EventDetailFragment : Fragment() {
                 viewModel.clearErrorMessage()
             }
         }
+
+//        eventId?.let { id ->
+//            favoriteViewModel.isFavorite(id).observe(viewLifecycleOwner) { isFav ->
+//                isFavorite = isFav
+//                updateFavoriteIcon(isFav)
+//            }
+//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -103,11 +132,17 @@ class EventDetailFragment : Fragment() {
         }
     }
 
+//    private fun updateFavoriteIcon(isFavorite: Boolean) {
+//        if (isFavorite) {
+//            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_24)
+//        } else {
+//            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_border_24)
+//        }
+//    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding?.btnOpenLink?.setOnClickListener(null)
         _binding = null
     }
-
-
 }

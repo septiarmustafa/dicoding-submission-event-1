@@ -17,4 +17,9 @@
     <string name="favorite">Favorite</string>
     <string name="setting">Setting</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="no_favorite_events">No Favorite Events</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_description">Event Description</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
+    <string name="love">Love</string>
 </resources>

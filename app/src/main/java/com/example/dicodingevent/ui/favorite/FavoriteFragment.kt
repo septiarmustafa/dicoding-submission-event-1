@@ -6,22 +6,39 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.dicodingevent.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dicodingevent.databinding.FragmentFavoriteBinding
 
 class FavoriteFragment : Fragment() {
 
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: FavoriteViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
+    private lateinit var adapter: FavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+
+        adapter = FavoriteAdapter { event ->
+            viewModel.removeFavorite(event)
+        }
+        binding.rvFavoriteEvents.layoutManager = LinearLayoutManager(context)
+        binding.rvFavoriteEvents.adapter = adapter
+
+        viewModel.favoriteEvents.observe(viewLifecycleOwner) { events ->
+            adapter.submitList(events)
+            binding.ivEmptyState.visibility = if (events.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding?.rvFavoriteEvents?.adapter = null
+        _binding = null
     }
 }
