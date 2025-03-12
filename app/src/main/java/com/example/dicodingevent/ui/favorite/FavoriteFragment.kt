@@ -13,7 +13,7 @@ import com.example.dicodingevent.shared.SharedMethod
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel: FavoriteViewModel by viewModels {
         FavoriteViewModelFactory(requireActivity().application)
     }
@@ -22,7 +22,7 @@ class FavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
 
         adapter = FavoriteAdapter(
@@ -33,7 +33,7 @@ class FavoriteFragment : Fragment() {
                 SharedMethod.navigateToEventDetail(this, event.id.toString())
             }
         )
-        binding.apply {
+        binding?.apply {
             rvFavoriteEvents.layoutManager = LinearLayoutManager(context)
             rvFavoriteEvents.adapter = adapter
         }
@@ -41,14 +41,14 @@ class FavoriteFragment : Fragment() {
 
         viewModel.favoriteEvents.observe(viewLifecycleOwner) { events ->
             if (events.isNullOrEmpty()) {
-                binding.ivEmptyState.visibility = View.VISIBLE
+                binding?.ivEmptyState?.visibility = View.VISIBLE
             } else {
-                binding.ivEmptyState.visibility = View.GONE
+                binding?.ivEmptyState?.visibility = View.GONE
             }
             adapter.submitList(events)
         }
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onDestroyView() {

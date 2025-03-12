@@ -14,7 +14,7 @@ import com.example.dicodingevent.shared.SharedMethod
 class UpcomingFragment : Fragment() {
 
     private var _binding: FragmentUpcomingBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val upcomingViewModel by viewModels<UpcomingViewModel>()
     private lateinit var adapter: EventAdapter
 
@@ -22,13 +22,13 @@ class UpcomingFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentUpcomingBinding.inflate(inflater, container, false)
 
         setupRecyclerViews()
         observeViewModel()
 
-        return binding.root
+        return binding?.root
     }
 
     private fun setupRecyclerViews() {
@@ -36,7 +36,7 @@ class UpcomingFragment : Fragment() {
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
-        binding.rvUpcoming.apply {
+        binding?.rvUpcoming?.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@UpcomingFragment.adapter
         }
@@ -45,14 +45,14 @@ class UpcomingFragment : Fragment() {
     private fun observeViewModel() {
         upcomingViewModel.apply {
             listEvent.observe(viewLifecycleOwner) { events ->
-                binding.apply {
+                binding?.apply {
                     ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
                     adapter.submitList(events)
                 }
             }
 
             isLoading.observe(viewLifecycleOwner) {
-                SharedMethod.showLoading(it, binding.progressBar)
+                binding?.progressBar?.let { progressBar -> SharedMethod.showLoading(it, progressBar) }
             }
 
             errorMessage.observe(viewLifecycleOwner) { message ->

@@ -14,7 +14,7 @@ import com.example.dicodingevent.shared.SharedMethod
 class FinishedFragment : Fragment() {
 
     private var _binding: FragmentFinishedBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val finishedViewModel by viewModels<FinishedViewModel>()
     private lateinit var adapter: EventAdapter
 
@@ -22,14 +22,14 @@ class FinishedFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentFinishedBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
         setupSearchView()
         observeViewModel()
 
-        return binding.root
+        return binding?.root
     }
 
     private fun setupRecyclerView() {
@@ -37,14 +37,14 @@ class FinishedFragment : Fragment() {
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
-        binding.apply {
+        binding?.apply {
             rvFinishedEvents.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             rvFinishedEvents.adapter = adapter
         }
     }
 
     private fun setupSearchView() {
-        binding.apply {
+        binding?.apply {
             svEventSearch.setOnClickListener {
                 svEventSearch.isIconified = false
                 svEventSearch.requestFocus()
@@ -64,14 +64,14 @@ class FinishedFragment : Fragment() {
     private fun observeViewModel() {
         finishedViewModel.apply {
             listEvent.observe(viewLifecycleOwner) { events ->
-                binding.apply {
+                binding?.apply {
                     ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
                     adapter.submitList(events)
                 }
             }
 
-            isLoading.observe(viewLifecycleOwner) {
-                SharedMethod.showLoading(it, binding.progressBar)
+            isLoading.observe(viewLifecycleOwner) { isLoading ->
+                binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
             }
 
             errorMessage.observe(viewLifecycleOwner) { message ->

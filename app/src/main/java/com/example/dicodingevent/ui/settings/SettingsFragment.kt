@@ -11,25 +11,25 @@ import com.example.dicodingevent.databinding.FragmentSettingsBinding
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel: SettingViewModel by viewModels {
         SettingViewModelFactory(SettingsRepository(requireContext()))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         viewModel.themeSetting.observe(viewLifecycleOwner) { isDarkMode ->
-            binding.switchTheme.isChecked = isDarkMode
+            binding?.switchTheme?.isChecked = isDarkMode
         }
 
-        binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
+        binding?.switchTheme?.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveThemeSetting(isChecked)
         }
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onDestroyView() {
