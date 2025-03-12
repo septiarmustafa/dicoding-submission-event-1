@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
-import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
+import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentEventDetailBinding
 import com.example.dicodingevent.shared.SharedMethod
@@ -55,17 +55,17 @@ class EventDetailFragment : Fragment() {
 
         binding?.ivLoveButton?.setOnClickListener {
             currentEvent?.let { event ->
-                val favoriteEvent = FavoriteEvent(
+                val favoriteEventEntity = FavoriteEventEntity(
                     event.id ?: -1,
                     event.name ?: "",
                     event.summary ?: "",
                     event.imageLogo ?: ""
                 )
                 if (isFavorite) {
-                    favoriteViewModel.removeFavorite(favoriteEvent)
+                    favoriteViewModel.removeFavorite(favoriteEventEntity)
                     SharedMethod.showToastTop(requireContext(), "Removed from favorites")
                 } else {
-                    favoriteViewModel.addFavorite(favoriteEvent)
+                    favoriteViewModel.addFavorite(favoriteEventEntity)
                     SharedMethod.showToastTop(requireContext(), "Added to favorites")
                 }
             }

@@ -39,7 +39,7 @@ class FavoriteFragment : Fragment() {
         }
 
 
-        viewModel.favoriteEvents.observe(viewLifecycleOwner) { events ->
+        viewModel.favoriteEventsEntity.observe(viewLifecycleOwner) { events ->
             if (events.isNullOrEmpty()) {
                 binding?.ivEmptyState?.visibility = View.VISIBLE
             } else {

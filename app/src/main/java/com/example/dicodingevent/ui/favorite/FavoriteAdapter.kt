@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
-import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
+import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import com.example.dicodingevent.databinding.ItemFavoriteEventBinding
 
 class FavoriteAdapter(
-    private val onDeleteClick: (FavoriteEvent) -> Unit,
-    private val onItemClick: (FavoriteEvent) -> Unit
-) : ListAdapter<FavoriteEvent, FavoriteAdapter.FavoriteViewHolder>(DiffCallback()) {
+    private val onDeleteClick: (FavoriteEventEntity) -> Unit,
+    private val onItemClick: (FavoriteEventEntity) -> Unit
+) : ListAdapter<FavoriteEventEntity, FavoriteAdapter.FavoriteViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         val binding = ItemFavoriteEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +26,7 @@ class FavoriteAdapter(
     }
 
     inner class FavoriteViewHolder(private val binding: ItemFavoriteEventBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: FavoriteEvent) {
+        fun bind(event: FavoriteEventEntity) {
             binding.apply {
                 tvEventTitle.text = event.title
                 tvEventSubtitle.text = event.description
@@ -41,12 +41,12 @@ class FavoriteAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<FavoriteEvent>() {
-        override fun areItemsTheSame(oldItem: FavoriteEvent, newItem: FavoriteEvent): Boolean {
+    class DiffCallback : DiffUtil.ItemCallback<FavoriteEventEntity>() {
+        override fun areItemsTheSame(oldItem: FavoriteEventEntity, newItem: FavoriteEventEntity): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: FavoriteEvent, newItem: FavoriteEvent): Boolean {
+        override fun areContentsTheSame(oldItem: FavoriteEventEntity, newItem: FavoriteEventEntity): Boolean {
             return oldItem == newItem
         }
     }

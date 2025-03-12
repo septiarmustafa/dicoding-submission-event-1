@@ -5,19 +5,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.dicodingevent.data.local.AppDatabase
-import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
+import com.example.dicodingevent.data.local.room.FavoriteDatabase
+import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
-    private val favoriteDao = AppDatabase.getDatabase(application).favoriteDao()
-    val favoriteEvents: LiveData<List<FavoriteEvent>> = favoriteDao.getAllFavorites().asLiveData()
+    private val favoriteDao = FavoriteDatabase.getDatabase(application).favoriteDao()
+    val favoriteEventsEntity: LiveData<List<FavoriteEventEntity>> = favoriteDao.getAllFavorites().asLiveData()
 
-    fun addFavorite(event: FavoriteEvent) = viewModelScope.launch {
+    fun addFavorite(event: FavoriteEventEntity) = viewModelScope.launch {
         favoriteDao.addFavorite(event)
     }
 
-    fun removeFavorite(event: FavoriteEvent) = viewModelScope.launch {
+    fun removeFavorite(event: FavoriteEventEntity) = viewModelScope.launch {
         try {
             favoriteDao.removeFavorite(event)
         } catch (e: Exception) {
