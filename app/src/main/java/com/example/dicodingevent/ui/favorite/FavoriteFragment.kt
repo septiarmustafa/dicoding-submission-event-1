@@ -13,7 +13,9 @@ class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FavoriteViewModel by viewModels()
+    private val viewModel: FavoriteViewModel by viewModels {
+        FavoriteViewModelFactory(requireActivity().application)
+    }
     private lateinit var adapter: FavoriteAdapter
 
     override fun onCreateView(
@@ -29,8 +31,13 @@ class FavoriteFragment : Fragment() {
         binding.rvFavoriteEvents.adapter = adapter
 
         viewModel.favoriteEvents.observe(viewLifecycleOwner) { events ->
-            adapter.submitList(events)
-            binding.ivEmptyState.visibility = if (events.isEmpty()) View.VISIBLE else View.GONE
+            println("FavoriteFragment: favoriteEvents size = ${events?.size ?: 0}")
+            if (events.isNullOrEmpty()) {
+                binding.ivEmptyState.visibility = View.VISIBLE
+            } else {
+                binding.ivEmptyState.visibility = View.GONE
+                adapter.submitList(events)
+            }
         }
 
         return binding.root

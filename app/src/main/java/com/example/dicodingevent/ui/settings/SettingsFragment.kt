@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.dicodingevent.databinding.FragmentSettingsBinding
-import com.example.dicodingevent.shared.ViewModelFactory
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SettingViewModel by viewModels {
-        ViewModelFactory(Settings(requireContext()))
+        SettingViewModelFactory(Settings(requireContext()))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

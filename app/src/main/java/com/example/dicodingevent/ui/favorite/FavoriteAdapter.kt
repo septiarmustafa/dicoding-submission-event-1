@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
+import com.example.dicodingevent.R
 import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
 import com.example.dicodingevent.databinding.ItemFavoriteEventBinding
 
@@ -27,7 +28,11 @@ class FavoriteAdapter(
         fun bind(event: FavoriteEvent) {
             binding.tvEventTitle.text = event.title
             binding.tvEventSubtitle.text = event.description
-            Glide.with(binding.ivEventImage.context).load(event.imageUrl).into(binding.ivEventImage)
+            Glide.with(binding.ivEventImage.context)
+                .load(event.imageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(binding.ivEventImage)
             binding.ivDeleteFavorite.setOnClickListener {
                 onDeleteClick(event)
             }
