@@ -1,7 +1,9 @@
 package com.example.dicodingevent.shared
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.dicodingevent.ui.favorite.FavoriteFragment
@@ -38,6 +40,12 @@ object SharedMethod {
         }
 
         dialogBuilder.show()
+    }
+
+    fun showToastTop(context: Context, message: String) {
+        val toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 150)
+        toast.show()
     }
 
     fun navigateToEventDetail(fragment: Fragment, eventId: String) {

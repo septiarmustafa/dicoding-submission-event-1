@@ -66,10 +66,10 @@ class EventDetailFragment : Fragment() {
                 )
                 if (isFavorite) {
                     favoriteViewModel.removeFavorite(favoriteEvent)
-                    Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+                    SharedMethod.showToastTop(requireContext(), "Removed from favorites")
                 } else {
                     favoriteViewModel.addFavorite(favoriteEvent)
-                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                    SharedMethod.showToastTop(requireContext(), "Added to favorites")
                 }
             }
         }
