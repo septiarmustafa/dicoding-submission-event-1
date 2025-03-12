@@ -30,7 +30,7 @@
         android:label="@string/title_finished"
         tools:layout="@layout/fragment_finished">
         <action
-            android:id="@+id/action_navigation_finished_to_eventDetailFragment"
+            android:id="@+id/action_navigation_finished_to_event_detail_fragment"
             app:destination="@id/event_detail_fragment" />
     </fragment>
 
@@ -48,7 +48,11 @@
         android:id="@+id/navigation_favorite"
         android:name="com.example.dicodingevent.ui.favorite.FavoriteFragment"
         android:label="Favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_navigation_favorite_to_event_detail_fragment"
+            app:destination="@id/event_detail_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_setting"

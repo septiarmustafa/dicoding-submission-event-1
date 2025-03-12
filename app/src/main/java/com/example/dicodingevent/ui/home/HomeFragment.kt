@@ -37,10 +37,10 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerViews() {
         upcomingAdapter = EventAdapter(true){ event ->
-            navigateToDetail(event)
+            SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
         finishedAdapter = EventAdapter(false){ event ->
-            navigateToDetail(event)
+            SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
         binding.rvUpcomingEventsHome.apply {
@@ -83,13 +83,6 @@ class HomeFragment : Fragment() {
                 homeViewModel.clearErrorMessage()
             }
         }
-    }
-
-    private fun navigateToDetail(event: Event){
-        val action = HomeFragmentDirections.actionNavigationHomeToEventDetailFragment(
-            event.id.toString()
-        )
-        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

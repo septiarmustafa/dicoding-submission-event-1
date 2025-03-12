@@ -6,10 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.databinding.FragmentFavoriteBinding
-import kotlinx.coroutines.launch
+import com.example.dicodingevent.shared.SharedMethod
 
 class FavoriteFragment : Fragment() {
 
@@ -26,11 +25,14 @@ class FavoriteFragment : Fragment() {
     ): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
 
-        adapter = FavoriteAdapter { event ->
-            viewLifecycleOwner.lifecycleScope.launch {
+        adapter = FavoriteAdapter(
+            onDeleteClick = { event ->
                 viewModel.removeFavorite(event)
+            },
+            onItemClick = { event ->
+                SharedMethod.navigateToEventDetail(this, event.id.toString())
             }
-        }
+        )
         binding.rvFavoriteEvents.layoutManager = LinearLayoutManager(context)
         binding.rvFavoriteEvents.adapter = adapter
 

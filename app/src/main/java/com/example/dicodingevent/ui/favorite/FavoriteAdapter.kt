@@ -11,7 +11,8 @@ import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
 import com.example.dicodingevent.databinding.ItemFavoriteEventBinding
 
 class FavoriteAdapter(
-    private val onDeleteClick: (FavoriteEvent) -> Unit
+    private val onDeleteClick: (FavoriteEvent) -> Unit,
+    private val onItemClick: (FavoriteEvent) -> Unit
 ) : ListAdapter<FavoriteEvent, FavoriteAdapter.FavoriteViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
@@ -32,6 +33,11 @@ class FavoriteAdapter(
                 .load(event.imageUrl)
                 .error(R.drawable.ic_launcher_background)
                 .into(binding.ivEventImage)
+
+            binding.root.setOnClickListener {
+                onItemClick(event)
+            }
+
             binding.ivDeleteFavorite.setOnClickListener {
                 onDeleteClick(event)
             }

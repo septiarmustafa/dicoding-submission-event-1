@@ -22,11 +22,6 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
     fun removeFavorite(event: FavoriteEvent) = viewModelScope.launch {
         try {
             favoriteDao.removeFavorite(event)
-
-            val updatedList = favoriteDao.getAllFavorites().first()
-            if (updatedList.isEmpty()) {
-                (favoriteEvents as? MutableLiveData)?.postValue(emptyList())
-            }
         } catch (e: Exception) {
             e.printStackTrace()
             println("Error removing favorite: ${e.message}")

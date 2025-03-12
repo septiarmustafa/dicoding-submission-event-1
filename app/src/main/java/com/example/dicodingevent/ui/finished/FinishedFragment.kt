@@ -35,10 +35,7 @@ class FinishedFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = EventAdapter(true) { event ->
-            val action = FinishedFragmentDirections.actionNavigationFinishedToEventDetailFragment(
-                event.id.toString()
-            )
-            findNavController().navigate(action)
+            SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
         binding.rvFinishedEvents.layoutManager =
