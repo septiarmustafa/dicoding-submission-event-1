@@ -1,7 +1,12 @@
 package com.example.dicodingevent.shared
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.dicodingevent.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object SharedMethod {

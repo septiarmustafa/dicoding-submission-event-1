@@ -56,25 +56,26 @@ class EventDetailFragment : Fragment() {
             customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
         )
 
-//        binding.ivLoveButton.setOnClickListener {
-//            currentEvent?.let { event ->
-//                val favoriteEvent = FavoriteEvent(
-//                    event.id ?: -1,
-//                    event.name ?: "",
-//                    event.mediaCover ?: "",
-//                    event.description ?: ""
-//                )
-//                if (isFavorite) {
-//                    favoriteViewModel.removeFavorite(favoriteEvent)
-//                } else {
-//                    favoriteViewModel.addFavorite(favoriteEvent)
-//                }
-//            }
-//        }
+        binding.ivLoveButton.setOnClickListener {
+            currentEvent?.let { event ->
+                val favoriteEvent = FavoriteEvent(
+                    event.id ?: -1,
+                    event.name ?: "",
+                    event.mediaCover ?: "",
+                    event.description ?: ""
+                )
+                if (isFavorite) {
+                    favoriteViewModel.removeFavorite(favoriteEvent)
+                    Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+                } else {
+                    favoriteViewModel.addFavorite(favoriteEvent)
+                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupObservers() {
-
         viewModel.isLoading.observe(viewLifecycleOwner) {
             SharedMethod.showLoading(it, binding.progressBar)
         }
@@ -83,6 +84,7 @@ class EventDetailFragment : Fragment() {
             event?.let { it ->
                 bindEventData(it)
                 currentEvent = it
+
                 binding.btnOpenLink.setOnClickListener {
                     event.link?.let {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
@@ -103,12 +105,12 @@ class EventDetailFragment : Fragment() {
             }
         }
 
-//        eventId?.let { id ->
-//            favoriteViewModel.isFavorite(id).observe(viewLifecycleOwner) { isFav ->
-//                isFavorite = isFav
-//                updateFavoriteIcon(isFav)
-//            }
-//        }
+        eventId?.let { id ->
+            favoriteViewModel.isFavorite(id).observe(viewLifecycleOwner) { isFav ->
+                isFavorite = isFav
+                updateFavoriteIcon(isFav)
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -132,13 +134,13 @@ class EventDetailFragment : Fragment() {
         }
     }
 
-//    private fun updateFavoriteIcon(isFavorite: Boolean) {
-//        if (isFavorite) {
-//            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_24)
-//        } else {
-//            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_border_24)
-//        }
-//    }
+    private fun updateFavoriteIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_24)
+        } else {
+            binding.ivLoveButton.setImageResource(R.drawable.ic_favorite_border_24)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
