@@ -22,4 +22,5 @@
     <string name="event_description">Event Description</string>
     <string name="remove_from_favorite">Remove from favorite</string>
     <string name="love">Love</string>
+    <string name="favorite_events">Favorite Events</string>
 </resources>

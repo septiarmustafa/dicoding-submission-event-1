@@ -30,7 +30,6 @@ class FavoriteAdapter(
             binding.tvEventSubtitle.text = event.description
             Glide.with(binding.ivEventImage.context)
                 .load(event.imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(binding.ivEventImage)
             binding.ivDeleteFavorite.setOnClickListener {

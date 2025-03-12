@@ -61,8 +61,8 @@ class EventDetailFragment : Fragment() {
                 val favoriteEvent = FavoriteEvent(
                     event.id ?: -1,
                     event.name ?: "",
-                    event.mediaCover ?: "",
-                    event.description ?: ""
+                    event.summary ?: "",
+                    event.imageLogo ?: ""
                 )
                 if (isFavorite) {
                     favoriteViewModel.removeFavorite(favoriteEvent)
