@@ -64,6 +64,7 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_delete_24"
             android:contentDescription="@string/remove_from_favorite"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="8dp"
