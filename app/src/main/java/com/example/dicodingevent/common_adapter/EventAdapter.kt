@@ -43,12 +43,14 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
 
         class FinishedViewHolder(private val binding: ItemEventVerticalBinding) : EventViewHolder(binding) {
             override fun bind(event: Event, onClick: (Event) -> Unit) {
-                binding.tvEventTitle.text = event.name
-                binding.tvEventDescription.text = event.summary
-                Glide.with(binding.root.context)
-                    .load(event.imageLogo)
-                    .error(R.drawable.ic_launcher_background)
-                    .into(binding.ivEventImage)
+                binding.apply {
+                    tvEventTitle.text = event.name
+                    tvEventDescription.text = event.summary
+                    Glide.with(root.context)
+                        .load(event.imageLogo)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(ivEventImage)
+                }
 
                 itemView.setOnClickListener {
                     onClick(event)
@@ -58,12 +60,14 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
 
         class UpcomingViewHolder(private val binding: ItemEventHorizontalBinding) : EventViewHolder(binding) {
             override fun bind(event: Event, onClick: (Event) -> Unit) {
-                binding.tvEventTitle.text = event.name
-                binding.tvEventDescription.text = event.summary
-                Glide.with(binding.root.context)
-                    .load(event.imageLogo)
-                    .error(R.drawable.ic_launcher_background)
-                    .into(binding.ivEventImage)
+                binding.apply {
+                    tvEventTitle.text = event.name
+                    tvEventDescription.text = event.summary
+                    Glide.with(root.context)
+                        .load(event.imageLogo)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(ivEventImage)
+                }
 
                 itemView.setOnClickListener {
                     onClick(event)

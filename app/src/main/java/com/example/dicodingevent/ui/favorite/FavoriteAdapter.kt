@@ -27,19 +27,16 @@ class FavoriteAdapter(
 
     inner class FavoriteViewHolder(private val binding: ItemFavoriteEventBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         fun bind(event: FavoriteEvent) {
-            binding.tvEventTitle.text = event.title
-            binding.tvEventSubtitle.text = event.description
-            Glide.with(binding.ivEventImage.context)
-                .load(event.imageUrl)
-                .error(R.drawable.ic_launcher_background)
-                .into(binding.ivEventImage)
+            binding.apply {
+                tvEventTitle.text = event.title
+                tvEventSubtitle.text = event.description
+                Glide.with(ivEventImage.context)
+                    .load(event.imageUrl)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(ivEventImage)
 
-            binding.root.setOnClickListener {
-                onItemClick(event)
-            }
-
-            binding.ivDeleteFavorite.setOnClickListener {
-                onDeleteClick(event)
+                root.setOnClickListener { onItemClick(event) }
+                ivDeleteFavorite.setOnClickListener { onDeleteClick(event) }
             }
         }
     }

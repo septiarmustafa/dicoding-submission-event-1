@@ -36,30 +36,34 @@ class UpcomingFragment : Fragment() {
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
-        binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvUpcoming.adapter = adapter
+        binding.rvUpcoming.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@UpcomingFragment.adapter
+        }
     }
 
     private fun observeViewModel() {
-        upcomingViewModel.listEvent.observe(viewLifecycleOwner) {
-            it?.let { events ->
-                if (events.isEmpty()) binding.ivEmptyState.visibility = View.VISIBLE else   binding.ivEmptyState.visibility = View.GONE
-                adapter.submitList(events)
+        upcomingViewModel.apply {
+            listEvent.observe(viewLifecycleOwner) { events ->
+                binding.apply {
+                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    adapter.submitList(events)
+                }
             }
-        }
 
-        upcomingViewModel.isLoading.observe(viewLifecycleOwner){
-            SharedMethod.showLoading(it, binding.progressBar)
-        }
+            isLoading.observe(viewLifecycleOwner) {
+                SharedMethod.showLoading(it, binding.progressBar)
+            }
 
-        upcomingViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                SharedMethod.showErrorDialog(
-                    context = requireContext(),
-                    message = it,
-                    customEvent = { upcomingViewModel.getEvent() }
-                )
-                upcomingViewModel.clearErrorMessage()
+            errorMessage.observe(viewLifecycleOwner) { message ->
+                message?.let {
+                    SharedMethod.showErrorDialog(
+                        context = requireContext(),
+                        message = it,
+                        customEvent = { getEvent() }
+                    )
+                    clearErrorMessage()
+                }
             }
         }
     }

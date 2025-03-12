@@ -38,49 +38,52 @@ class FinishedFragment : Fragment() {
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
-        binding.rvFinishedEvents.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.rvFinishedEvents.adapter = adapter
+        binding.apply {
+            rvFinishedEvents.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            rvFinishedEvents.adapter = adapter
+        }
     }
 
     private fun setupSearchView() {
-        binding.svEventSearch.setOnClickListener {
-            binding.svEventSearch.isIconified = false
-            binding.svEventSearch.requestFocus()
+        binding.apply {
+            svEventSearch.setOnClickListener {
+                svEventSearch.isIconified = false
+                svEventSearch.requestFocus()
+            }
+
+            svEventSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    finishedViewModel.getEvent(newText)
+                    return true
+                }
+            })
         }
-
-        binding.svEventSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                finishedViewModel.getEvent(newText)
-                return true
-            }
-        })
     }
 
     private fun observeViewModel() {
-        finishedViewModel.listEvent.observe(viewLifecycleOwner) {
-            it?.let { events ->
-                if (events.isEmpty()) binding.ivEmptyState.visibility = View.VISIBLE else   binding.ivEmptyState.visibility = View.GONE
-                adapter.submitList(events)
+        finishedViewModel.apply {
+            listEvent.observe(viewLifecycleOwner) { events ->
+                binding.apply {
+                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    adapter.submitList(events)
+                }
             }
-        }
 
-        finishedViewModel.isLoading.observe(viewLifecycleOwner) {
-            SharedMethod.showLoading(it, binding.progressBar)
-        }
+            isLoading.observe(viewLifecycleOwner) {
+                SharedMethod.showLoading(it, binding.progressBar)
+            }
 
-        finishedViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                SharedMethod.showErrorDialog(
-                    context = requireContext(),
-                    message = it,
-                    customEvent = { finishedViewModel.getEvent() }
-                )
-                finishedViewModel.clearErrorMessage()
+            errorMessage.observe(viewLifecycleOwner) { message ->
+                message?.let {
+                    SharedMethod.showErrorDialog(
+                        context = requireContext(),
+                        message = it,
+                        customEvent = { finishedViewModel.getEvent() }
+                    )
+                    finishedViewModel.clearErrorMessage()
+                }
             }
         }
     }

@@ -33,8 +33,11 @@ class FavoriteFragment : Fragment() {
                 SharedMethod.navigateToEventDetail(this, event.id.toString())
             }
         )
-        binding.rvFavoriteEvents.layoutManager = LinearLayoutManager(context)
-        binding.rvFavoriteEvents.adapter = adapter
+        binding.apply {
+            rvFavoriteEvents.layoutManager = LinearLayoutManager(context)
+            rvFavoriteEvents.adapter = adapter
+        }
+
 
         viewModel.favoriteEvents.observe(viewLifecycleOwner) { events ->
             if (events.isNullOrEmpty()) {

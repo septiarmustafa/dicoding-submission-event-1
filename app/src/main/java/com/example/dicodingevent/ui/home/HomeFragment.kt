@@ -43,44 +43,52 @@ class HomeFragment : Fragment() {
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
-        binding.rvUpcomingEventsHome.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = upcomingAdapter
-        }
+        binding.apply {
+            rvUpcomingEventsHome.apply {
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                adapter = upcomingAdapter
+            }
 
-        binding.rvFinishedEventsHome.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = finishedAdapter
+            rvFinishedEventsHome.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = finishedAdapter
+            }
         }
     }
 
     private fun observeViewModel() {
-        homeViewModel.upcomingEvents.observe(viewLifecycleOwner) {
-            it?.let { events ->
-                if (events.isEmpty())  binding.tvUpcomingEvents.text = getString(R.string.no_upcoming_event_available) else binding.tvUpcomingEvents.text = getString(R.string.upcoming_events)
-                upcomingAdapter.submitList(events)
+        homeViewModel.apply {
+            upcomingEvents.observe(viewLifecycleOwner) { events ->
+                binding.apply {
+                    tvUpcomingEvents.text = if (events.isNullOrEmpty()) {
+                        getString(R.string.no_upcoming_event_available)
+                    } else {
+                        getString(R.string.upcoming_events)
+                    }
+                    upcomingAdapter.submitList(events)
+                }
             }
-        }
 
-        homeViewModel.finishedEvents.observe(viewLifecycleOwner) {
-            it?.let { events ->
-                if (events.isEmpty()) binding.ivEmptyState.visibility = View.VISIBLE else   binding.ivEmptyState.visibility = View.GONE
-                finishedAdapter.submitList(events)
+            finishedEvents.observe(viewLifecycleOwner) { events ->
+                binding.apply {
+                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    finishedAdapter.submitList(events)
+                }
             }
-        }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner){
-            SharedMethod.showLoading(it, binding.progressBar)
-        }
+            isLoading.observe(viewLifecycleOwner) {
+                SharedMethod.showLoading(it, binding.progressBar)
+            }
 
-        homeViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                SharedMethod.showErrorDialog(
-                    context = requireContext(),
-                    message = it,
-                    customEvent = { homeViewModel.loadAllEvent() }
-                )
-                homeViewModel.clearErrorMessage()
+            errorMessage.observe(viewLifecycleOwner) { message ->
+                message?.let {
+                    SharedMethod.showErrorDialog(
+                        context = requireContext(),
+                        message = it,
+                        customEvent = { loadAllEvent() }
+                    )
+                    clearErrorMessage()
+                }
             }
         }
     }
