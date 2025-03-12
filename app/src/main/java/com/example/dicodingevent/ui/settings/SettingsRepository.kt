@@ -9,12 +9,8 @@ import androidx.datastore.preferences.preferencesDataStore
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
-class Settings(context: Context) {
+class SettingsRepository(context: Context) {
     private val dataStore = context.dataStore
-
-    companion object {
-        val THEME_KEY = booleanPreferencesKey("theme_setting")
-    }
 
     val themeSetting: Flow<Boolean> = dataStore.data
         .map { preferences -> preferences[THEME_KEY] ?: false }
@@ -23,5 +19,9 @@ class Settings(context: Context) {
         dataStore.edit { preferences ->
             preferences[THEME_KEY] = isDarkMode
         }
+    }
+
+    companion object {
+        val THEME_KEY = booleanPreferencesKey("theme_setting")
     }
 }

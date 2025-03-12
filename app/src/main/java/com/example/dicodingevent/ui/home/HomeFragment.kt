@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.R
 import com.example.dicodingevent.common_adapter.EventAdapter
-import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentHomeBinding
 import com.example.dicodingevent.shared.SharedMethod
 

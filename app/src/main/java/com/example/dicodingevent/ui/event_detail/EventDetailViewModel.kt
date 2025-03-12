@@ -1,6 +1,5 @@
 package com.example.dicodingevent.ui.event_detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,14 +40,12 @@ class EventDetailViewModel : ViewModel() {
                 }  else {
                     val errorMsg = response.errorBody()?.string() ?: response.message()
                     _errorMessage.postValue(errorMsg)
-                    Log.e(TAG, "onFailure ${response.body()?.commonResponse?.error}: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<EventDetailResponse>, t: Throwable) {
                 _isLoading.postValue(false)
                 _errorMessage.postValue("Request failed: ${t.localizedMessage}")
-                Log.e(TAG, "onFailure: ${t.message}")
             }
 
         })

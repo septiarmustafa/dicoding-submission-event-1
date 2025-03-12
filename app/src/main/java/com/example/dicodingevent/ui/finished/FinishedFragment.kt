@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dicodingevent.common_adapter.EventAdapter
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
@@ -90,7 +89,6 @@ class FinishedFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding?.svEventSearch?.setOnClickListener(null)
         _binding = null
     }
 }

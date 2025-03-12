@@ -13,7 +13,7 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SettingViewModel by viewModels {
-        SettingViewModelFactory(Settings(requireContext()))
+        SettingViewModelFactory(SettingsRepository(requireContext()))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

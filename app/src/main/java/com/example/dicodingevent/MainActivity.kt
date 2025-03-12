@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.dicodingevent.databinding.ActivityMainBinding
 import com.example.dicodingevent.ui.settings.SettingViewModelFactory
-import com.example.dicodingevent.ui.settings.Settings
+import com.example.dicodingevent.ui.settings.SettingsRepository
 import com.example.dicodingevent.ui.settings.SettingViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val preferences = Settings(this)
+        val preferences = SettingsRepository(this)
         settingViewModel = ViewModelProvider(this, SettingViewModelFactory(preferences))[SettingViewModel::class.java]
 
         settingViewModel.themeSetting.observe(this) { isDarkMode ->

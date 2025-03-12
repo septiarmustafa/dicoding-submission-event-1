@@ -1,6 +1,5 @@
 package com.example.dicodingevent.ui.upcoming
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,10 +22,6 @@ class UpcomingViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    companion object{
-        private const val TAG = "UpcomingViewModel"
-    }
-
     init{
         getEvent()
     }
@@ -45,14 +40,12 @@ class UpcomingViewModel : ViewModel() {
                     _listEvent.value = response.body()?.listEvents ?: emptyList()
                 }  else {
                     _errorMessage.value = response.message()
-                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<ListEventResponse>, t: Throwable) {
                 _isLoading.postValue(false)
                 _errorMessage.value = "Failed to fetch data"
-                Log.e(TAG, "onFailure: ${t.message}")
             }
 
         })
@@ -60,5 +53,9 @@ class UpcomingViewModel : ViewModel() {
 
     fun clearErrorMessage() {
         _errorMessage.value = null
+    }
+
+    companion object{
+        private const val TAG = "UpcomingViewModel"
     }
 }

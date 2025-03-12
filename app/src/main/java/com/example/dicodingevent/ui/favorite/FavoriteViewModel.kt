@@ -3,12 +3,10 @@ package com.example.dicodingevent.ui.favorite
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.local.AppDatabase
 import com.example.dicodingevent.data.local.favorite_event.FavoriteEvent
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,7 +22,6 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
             favoriteDao.removeFavorite(event)
         } catch (e: Exception) {
             e.printStackTrace()
-            println("Error removing favorite: ${e.message}")
         }
     }
 
