@@ -6,10 +6,15 @@ import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.data.remote.retrofit.EventService
 import com.example.dicodingevent.shared.EventType
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import com.example.dicodingevent.data.remote.response.Result
 
-
-class EventRepository(private val eventService: EventService, private val favoriteDao: FavoriteDao,) {
+class EventRepository(
+    private val eventService: EventService,
+    private val favoriteDao: FavoriteDao,
+) {
 
     suspend fun getUpcomingEvents(): List<Event> {
         return withContext(Dispatchers.IO) {
@@ -72,12 +77,22 @@ class EventRepository(private val eventService: EventService, private val favori
     }
 
 
-    suspend fun getEventById(eventId: String): Event? {
-        return try {
+    suspend fun getEventById(eventId: String): Flow<Result<Event>> = flow {
+        emit(Result.Loading)
+        try {
             val response = eventService.getEventById(eventId)
-            response.body()?.event
+            if (response.isSuccessful) {
+                val event = response.body()?.event
+                if (event != null) {
+                    emit(Result.Success(event))
+                } else {
+                    emit(Result.Error("Event data is null"))
+                }
+            } else {
+                emit(Result.Error("Failed to fetch event: ${response.message()}"))
+            }
         } catch (e: Exception) {
-            null
+            emit(Result.Error(e.message ?: "An unexpected error occurred"))
         }
     }
 

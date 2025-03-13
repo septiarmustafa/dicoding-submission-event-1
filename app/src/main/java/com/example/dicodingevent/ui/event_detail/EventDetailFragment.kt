@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.dicodingevent.R
 import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import com.example.dicodingevent.data.remote.model.Event
+import com.example.dicodingevent.data.remote.response.Result
 import com.example.dicodingevent.databinding.FragmentEventDetailBinding
 import com.example.dicodingevent.di.AppContainer
 import com.example.dicodingevent.di.ViewModelFactory
@@ -82,41 +83,42 @@ class EventDetailFragment : Fragment() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            eventDetailViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
-            }
+            eventDetailViewModel.event.collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }
+                    }
+                    is Result.Success -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        result.data.let { event: Event ->
+                            bindEventData(event)
+                            currentEvent = event
 
-            eventDetailViewModel.event.observe(viewLifecycleOwner) { event ->
-                event?.let { event1 ->
-                    bindEventData(event1)
-                    currentEvent = event1
-
-                    binding?.btnOpenLink?.setOnClickListener {
-                        it?.let {
-                            val url = event1.link.toString()
-                            if (url.isNotEmpty() && Patterns.WEB_URL.matcher(url).matches()) {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                                startActivity(intent)
-                            } else {
-                                Toast.makeText(context, "Invalid or missing URL", Toast.LENGTH_SHORT).show()
+                            binding?.btnOpenLink?.setOnClickListener {
+                                val url = event.link.toString()
+                                if (url.isNotEmpty() && Patterns.WEB_URL.matcher(url).matches()) {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(context, "Invalid or missing URL", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     }
+                    is Result.Error -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        SharedMethod.showErrorDialog(
+                            context = requireContext(),
+                            message = result.error,
+                            customEvent = { eventId?.let { id -> eventDetailViewModel.getEventDetail(id) } }
+                        )
+                    }
                 }
             }
+        }
 
-            eventDetailViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-                message?.let {
-                    SharedMethod.showErrorDialog(
-                        context = requireContext(),
-                        message = it,
-                        customEvent = { eventId?.let { id -> eventDetailViewModel.getEventDetail(id) } }
-                    )
-                    eventDetailViewModel.clearErrorMessage()
-                }
-            }
-
-            eventId?.let { id ->
+        eventId?.let { id ->
+            viewLifecycleOwner.lifecycleScope.launch {
                 favoriteViewModel.isFavorite(id).observe(viewLifecycleOwner) { isFav ->
                     isFavorite = isFav
                     updateFavoriteIcon(isFav)
