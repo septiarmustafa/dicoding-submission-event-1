@@ -7,15 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dicodingevent.common_adapter.EventAdapter
+import com.example.dicodingevent.ui.adapter.EventAdapter
 import com.example.dicodingevent.databinding.FragmentUpcomingBinding
+import com.example.dicodingevent.di.AppContainer
+import com.example.dicodingevent.di.ViewModelFactory
 import com.example.dicodingevent.shared.SharedMethod
 
 class UpcomingFragment : Fragment() {
 
     private var _binding: FragmentUpcomingBinding? = null
     private val binding get() = _binding
-    private val upcomingViewModel by viewModels<UpcomingViewModel>()
+    private val appContainer by lazy { AppContainer(requireContext()) }
+    private val upcomingViewModel by viewModels<UpcomingViewModel> {
+        ViewModelFactory(appContainer.eventRepository)
+    }
     private lateinit var adapter: EventAdapter
 
     override fun onCreateView(

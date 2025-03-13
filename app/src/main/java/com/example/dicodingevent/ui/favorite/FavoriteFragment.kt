@@ -7,15 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dicodingevent.data.local.room.FavoriteDatabase
+import com.example.dicodingevent.data.repository.EventRepository
 import com.example.dicodingevent.databinding.FragmentFavoriteBinding
+import com.example.dicodingevent.di.AppContainer
+import com.example.dicodingevent.di.ViewModelFactory
 import com.example.dicodingevent.shared.SharedMethod
+import com.example.dicodingevent.ui.adapter.FavoriteAdapter
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding
+    private val appContainer by lazy { AppContainer(requireContext()) }
     private val viewModel: FavoriteViewModel by viewModels {
-        FavoriteViewModelFactory(requireActivity().application)
+        ViewModelFactory( appContainer.eventRepository, requireActivity().application)
     }
     private lateinit var adapter: FavoriteAdapter
 

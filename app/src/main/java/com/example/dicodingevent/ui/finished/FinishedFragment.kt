@@ -7,15 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.dicodingevent.common_adapter.EventAdapter
+import com.example.dicodingevent.ui.adapter.EventAdapter
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
+import com.example.dicodingevent.di.AppContainer
+import com.example.dicodingevent.di.ViewModelFactory
 import com.example.dicodingevent.shared.SharedMethod
 
 class FinishedFragment : Fragment() {
 
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding
-    private val finishedViewModel by viewModels<FinishedViewModel>()
+    private val appContainer by lazy { AppContainer(requireContext()) }
+    private val finishedViewModel: FinishedViewModel by viewModels {
+        ViewModelFactory(appContainer.eventRepository)
+    }
     private lateinit var adapter: EventAdapter
 
     override fun onCreateView(

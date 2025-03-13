@@ -1,10 +1,10 @@
-package com.example.dicodingevent.ui.settings
+package com.example.dicodingevent.data.repository
 
 import android.content.Context
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import androidx.datastore.preferences.preferencesDataStore
 
 private val Context.dataStore by preferencesDataStore(name = "settings")

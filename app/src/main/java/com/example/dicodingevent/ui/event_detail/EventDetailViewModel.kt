@@ -3,14 +3,17 @@ package com.example.dicodingevent.ui.event_detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.data.remote.response.event.EventDetailResponse
 import com.example.dicodingevent.data.remote.retrofit.ApiConfig
+import com.example.dicodingevent.data.repository.EventRepository
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EventDetailViewModel : ViewModel() {
+class EventDetailViewModel(private val repository: EventRepository) : ViewModel() {
     private val _event = MutableLiveData<Event>()
     val event : LiveData<Event> = _event
 
@@ -20,35 +23,18 @@ class EventDetailViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    companion object{
-        private const val TAG = "EventDetailViewModel"
-    }
-
     fun getEventDetail(eventId: String) {
-        _isLoading.postValue(true)
-
-        val client = ApiConfig.getApiService().getEventById(eventId)
-        client.enqueue(object : Callback<EventDetailResponse> {
-
-            override fun onResponse(
-                call: Call<EventDetailResponse>,
-                response: Response<EventDetailResponse>
-            ) {
-                _isLoading.postValue(false)
-                if (response.isSuccessful) {
-                    _event.postValue(response.body()?.event ?: Event())
-                }  else {
-                    val errorMsg = response.errorBody()?.string() ?: response.message()
-                    _errorMessage.postValue(errorMsg)
-                }
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val eventDetail = repository.getEventById(eventId)
+                _event.value = eventDetail ?: Event()
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to fetch event: ${e.localizedMessage}"
+            } finally {
+                _isLoading.value = false
             }
-
-            override fun onFailure(call: Call<EventDetailResponse>, t: Throwable) {
-                _isLoading.postValue(false)
-                _errorMessage.postValue("Request failed: ${t.localizedMessage}")
-            }
-
-        })
+        }
     }
 
     fun clearErrorMessage() {

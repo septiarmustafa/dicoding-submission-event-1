@@ -1,4 +1,4 @@
-package com.example.dicodingevent.ui.favorite
+package com.example.dicodingevent.ui.adapter
 
 
 import android.view.LayoutInflater

@@ -3,15 +3,12 @@ package com.example.dicodingevent.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.remote.model.Event
-import com.example.dicodingevent.data.remote.response.event.ListEventResponse
-import com.example.dicodingevent.data.remote.retrofit.ApiConfig
-import com.example.dicodingevent.shared.EventType
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.dicodingevent.data.repository.EventRepository
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val repository: EventRepository) : ViewModel() {
 
     private val _upcomingEvents = MutableLiveData<List<Event>>()
     val upcomingEvents: LiveData<List<Event>> get() = _upcomingEvents
@@ -26,44 +23,24 @@ class HomeViewModel : ViewModel() {
     val errorMessage: LiveData<String?> = _errorMessage
 
     init {
-        loadAllEvent()
+        loadAllEvents()
     }
 
-    fun loadAllEvent(){
-        loadEvents(EventType.UPCOMING.value, _upcomingEvents)
-        loadEvents(EventType.FINISHED.value, _finishedEvents)
-    }
-
-    private fun loadEvents(active: String, liveData: MutableLiveData<List<Event>>) {
-        _isLoading.postValue(true)
-
-        val client = ApiConfig.getApiService().getEvent(active, LIMIT_EVENT_HOME)
-        client.enqueue(object : Callback<ListEventResponse> {
-            override fun onResponse(
-                call: Call<ListEventResponse>,
-                response: Response<ListEventResponse>
-            ) {
-                _isLoading.postValue(false)
-                if (response.isSuccessful) {
-                    liveData.value = response.body()?.listEvents ?: emptyList()
-                } else {
-                    _errorMessage.value = response.message()
-                }
+    fun loadAllEvents() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _upcomingEvents.value = repository.getUpcomingEventsHome()
+                _finishedEvents.value = repository.getFinishedEventsHome()
+            } catch (e: Exception) {
+                _errorMessage.value = e.message ?: "Failed to load events"
+            } finally {
+                _isLoading.value = false
             }
-
-            override fun onFailure(call: Call<ListEventResponse>, t: Throwable) {
-                _isLoading.postValue(false)
-                _errorMessage.value = "Sorry, the request cannot be processed"
-            }
-        })
+        }
     }
 
     fun clearErrorMessage() {
         _errorMessage.value = null
-    }
-
-    companion object{
-        private const val TAG = "HomeViewModel"
-        private const val LIMIT_EVENT_HOME = "5"
     }
 }

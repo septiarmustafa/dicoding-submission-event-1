@@ -1,4 +1,4 @@
-package com.example.dicodingevent.utils
+package com.example.dicodingevent.shared
 
 import java.text.SimpleDateFormat
 import java.util.Locale

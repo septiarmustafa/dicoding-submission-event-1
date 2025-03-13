@@ -13,8 +13,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.dicodingevent.databinding.ActivityMainBinding
-import com.example.dicodingevent.ui.settings.SettingViewModelFactory
-import com.example.dicodingevent.ui.settings.SettingsRepository
+import com.example.dicodingevent.di.SettingViewModelFactory
+import com.example.dicodingevent.data.repository.SettingsRepository
 import com.example.dicodingevent.ui.settings.SettingViewModel
 
 class MainActivity : AppCompatActivity() {

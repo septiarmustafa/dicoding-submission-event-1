@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.dicodingevent.data.repository.SettingsRepository
 import com.example.dicodingevent.databinding.FragmentSettingsBinding
+import com.example.dicodingevent.di.SettingViewModelFactory
 
 class SettingsFragment : Fragment() {
 

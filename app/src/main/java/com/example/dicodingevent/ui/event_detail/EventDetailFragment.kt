@@ -17,17 +17,24 @@ import com.example.dicodingevent.R
 import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.FragmentEventDetailBinding
+import com.example.dicodingevent.di.AppContainer
+import com.example.dicodingevent.di.ViewModelFactory
 import com.example.dicodingevent.shared.SharedMethod
 import com.example.dicodingevent.ui.favorite.FavoriteViewModel
-import com.example.dicodingevent.utils.DateUtils
+import com.example.dicodingevent.shared.DateUtils
 import kotlinx.coroutines.launch
 
 class EventDetailFragment : Fragment() {
 
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding
-    private val viewModel: EventDetailViewModel by viewModels()
-    private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val appContainer by lazy { AppContainer(requireContext()) }
+    private val eventDetailViewModel: EventDetailViewModel by viewModels {
+        ViewModelFactory(appContainer.eventRepository)
+    }
+    private val favoriteViewModel: FavoriteViewModel by viewModels{
+        ViewModelFactory(appContainer.eventRepository, requireActivity().application)
+    }
     private var eventId: String? = null
     private var isFavorite: Boolean = false
     private var currentEvent: Event? = null
@@ -46,11 +53,11 @@ class EventDetailFragment : Fragment() {
         eventId = arguments?.getString(EVENT_ID_KEY)
         eventId?.let {
             setupObservers()
-            viewModel.getEventDetail(it)
+            eventDetailViewModel.getEventDetail(it)
         } ?:   SharedMethod.showErrorDialog(
             context = requireContext(),
             message = "Event ID is missing",
-            customEvent = { eventId?.let { viewModel.getEventDetail(it) } }
+            customEvent = { eventId?.let { eventDetailViewModel.getEventDetail(it) } }
         )
 
         binding?.ivLoveButton?.setOnClickListener {
@@ -74,11 +81,11 @@ class EventDetailFragment : Fragment() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            eventDetailViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
             }
 
-            viewModel.event.observe(viewLifecycleOwner) { event ->
+            eventDetailViewModel.event.observe(viewLifecycleOwner) { event ->
                 event?.let {
                     bindEventData(it)
                     currentEvent = it
@@ -92,14 +99,14 @@ class EventDetailFragment : Fragment() {
                 }
             }
 
-            viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            eventDetailViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
                 message?.let {
                     SharedMethod.showErrorDialog(
                         context = requireContext(),
                         message = it,
-                        customEvent = { eventId?.let { id -> viewModel.getEventDetail(id) } }
+                        customEvent = { eventId?.let { id -> eventDetailViewModel.getEventDetail(id) } }
                     )
-                    viewModel.clearErrorMessage()
+                    eventDetailViewModel.clearErrorMessage()
                 }
             }
 

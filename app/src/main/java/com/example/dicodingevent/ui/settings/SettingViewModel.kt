@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.dicodingevent.data.repository.SettingsRepository
 import kotlinx.coroutines.launch
 
 class SettingViewModel(private val preferences: SettingsRepository) : ViewModel() {
