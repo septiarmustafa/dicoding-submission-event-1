@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,15 +87,20 @@ class EventDetailFragment : Fragment() {
             }
 
             eventDetailViewModel.event.observe(viewLifecycleOwner) { event ->
-                event?.let {
-                    bindEventData(it)
-                    currentEvent = it
+                event?.let { event1 ->
+                    bindEventData(event1)
+                    currentEvent = event1
 
-                    binding?.btnOpenLink?.setOnClickListener { it ->
+                    binding?.btnOpenLink?.setOnClickListener {
                         it?.let {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.toString()))
-                            startActivity(intent)
-                        } ?: Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show()
+                            val url = event1.link.toString()
+                            if (url.isNotEmpty() && Patterns.WEB_URL.matcher(url).matches()) {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(context, "Invalid or missing URL", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }
