@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.R
 import com.example.dicodingevent.ui.adapter.EventAdapter
 import com.example.dicodingevent.databinding.FragmentHomeBinding
 import com.example.dicodingevent.di.AppContainer
 import com.example.dicodingevent.di.ViewModelFactory
+import com.example.dicodingevent.data.remote.response.Result
 import com.example.dicodingevent.shared.SharedMethod
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -60,40 +63,90 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.apply {
-            upcomingEvents.observe(viewLifecycleOwner) { events ->
-                binding?.apply {
-                    tvUpcomingEvents.text = if (events.isNullOrEmpty()) {
-                        getString(R.string.no_upcoming_event_available)
-                    } else {
-                        getString(R.string.upcoming_events)
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.upcomingEvents.collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }
                     }
-                    upcomingAdapter.submitList(events)
-                }
-            }
-
-            finishedEvents.observe(viewLifecycleOwner) { events ->
-                binding?.apply {
-                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
-                    finishedAdapter.submitList(events)
-                }
-            }
-
-            isLoading.observe(viewLifecycleOwner) {
-                binding?.progressBar?.let { progressBar -> SharedMethod.showLoading(it, progressBar) }
-            }
-
-            errorMessage.observe(viewLifecycleOwner) { message ->
-                message?.let {
-                    SharedMethod.showErrorDialog(
-                        context = requireContext(),
-                        message = it,
-                        customEvent = { loadAllEvents() }
-                    )
-                    clearErrorMessage()
+                    is Result.Success -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        val eventList = result.data
+                        binding?.tvUpcomingEvents?.text = if (eventList.isEmpty()) {
+                            getString(R.string.no_upcoming_event_available)
+                        } else {
+                            getString(R.string.upcoming_events)
+                        }
+                        upcomingAdapter.submitList(eventList)
+                    }
+                    is Result.Error -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        SharedMethod.showErrorDialog(
+                            context = requireContext(),
+                            message = result.error,
+                            customEvent = { homeViewModel.loadAllEvents() }
+                        )
+                    }
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.finishedEvents.collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }                    }
+                    is Result.Success -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        val eventList = result.data
+                        binding?.ivEmptyState?.visibility = if (eventList.isEmpty()) View.VISIBLE else View.GONE
+                        finishedAdapter.submitList(eventList)
+                    }
+                    is Result.Error -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        SharedMethod.showErrorDialog(
+                            context = requireContext(),
+                            message = result.error,
+                            customEvent = { homeViewModel.loadAllEvents() }
+                        )
+                    }
+                }
+            }
+        }
+//        homeViewModel.apply {
+//            upcomingEvents.observe(viewLifecycleOwner) { events ->
+//                binding?.apply {
+//                    tvUpcomingEvents.text = if (events.isNullOrEmpty()) {
+//                        getString(R.string.no_upcoming_event_available)
+//                    } else {
+//                        getString(R.string.upcoming_events)
+//                    }
+//                    upcomingAdapter.submitList(events)
+//                }
+//            }
+//
+//            finishedEvents.observe(viewLifecycleOwner) { events ->
+//                binding?.apply {
+//                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
+//                    finishedAdapter.submitList(events)
+//                }
+//            }
+//
+//            isLoading.observe(viewLifecycleOwner) {
+//                binding?.progressBar?.let { progressBar -> SharedMethod.showLoading(it, progressBar) }
+//            }
+//
+//            errorMessage.observe(viewLifecycleOwner) { message ->
+//                message?.let {
+//                    SharedMethod.showErrorDialog(
+//                        context = requireContext(),
+//                        message = it,
+//                        customEvent = { loadAllEvents() }
+//                    )
+//                    clearErrorMessage()
+//                }
+//            }
+//        }
     }
 
     override fun onDestroyView() {

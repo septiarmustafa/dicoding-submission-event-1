@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dicodingevent.ui.adapter.EventAdapter
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
 import com.example.dicodingevent.di.AppContainer
 import com.example.dicodingevent.di.ViewModelFactory
 import com.example.dicodingevent.shared.SharedMethod
+import com.example.dicodingevent.data.remote.response.Result
+import kotlinx.coroutines.launch
 
 class FinishedFragment : Fragment() {
 
@@ -59,7 +62,7 @@ class FinishedFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    finishedViewModel.getEvent(newText)
+                    finishedViewModel.getFinishedEvents(newText)
                     return true
                 }
             })
@@ -67,29 +70,56 @@ class FinishedFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        finishedViewModel.apply {
-            listEvent.observe(viewLifecycleOwner) { events ->
-                binding?.apply {
-                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
-                    adapter.submitList(events)
-                }
-            }
-
-            isLoading.observe(viewLifecycleOwner) { isLoading ->
-                binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
-            }
-
-            errorMessage.observe(viewLifecycleOwner) { message ->
-                message?.let {
-                    SharedMethod.showErrorDialog(
-                        context = requireContext(),
-                        message = it,
-                        customEvent = { finishedViewModel.getEvent() }
-                    )
-                    finishedViewModel.clearErrorMessage()
+        viewLifecycleOwner.lifecycleScope.launch {
+            finishedViewModel.finishedEvents.collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }
+                    }
+                    is Result.Success -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        val eventList = result.data
+                        binding?.apply {
+                            ivEmptyState.visibility = if (eventList.isEmpty()) View.VISIBLE else View.GONE
+                            adapter.submitList(eventList)
+                        }
+                    }
+                    is Result.Error -> {
+                        binding?.let { SharedMethod.showLoading(false, it.progressBar) }
+                        SharedMethod.showErrorDialog(
+                            context = requireContext(),
+                            message = result.error,
+                            customEvent = { finishedViewModel.getFinishedEvents() }
+                        )
+                    }
                 }
             }
         }
+
+        finishedViewModel.getFinishedEvents()
+//        finishedViewModel.apply {
+//            listEvent.observe(viewLifecycleOwner) { events ->
+//                binding?.apply {
+//                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
+//                    adapter.submitList(events)
+//                }
+//            }
+//
+//            isLoading.observe(viewLifecycleOwner) { isLoading ->
+//                binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
+//            }
+//
+//            errorMessage.observe(viewLifecycleOwner) { message ->
+//                message?.let {
+//                    SharedMethod.showErrorDialog(
+//                        context = requireContext(),
+//                        message = it,
+//                        customEvent = { finishedViewModel.getEvent() }
+//                    )
+//                    finishedViewModel.clearErrorMessage()
+//                }
+//            }
+//        }
     }
 
     override fun onDestroyView() {
