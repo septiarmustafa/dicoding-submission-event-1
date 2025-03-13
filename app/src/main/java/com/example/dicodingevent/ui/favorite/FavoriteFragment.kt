@@ -1,14 +1,12 @@
 package com.example.dicodingevent.ui.favorite
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dicodingevent.data.local.room.FavoriteDatabase
-import com.example.dicodingevent.data.repository.EventRepository
 import com.example.dicodingevent.databinding.FragmentFavoriteBinding
 import com.example.dicodingevent.di.AppContainer
 import com.example.dicodingevent.di.ViewModelFactory
