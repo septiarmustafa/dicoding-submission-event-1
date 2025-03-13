@@ -25,6 +25,8 @@ import com.example.dicodingevent.shared.SharedMethod
 import com.example.dicodingevent.ui.favorite.FavoriteViewModel
 import com.example.dicodingevent.shared.DateUtils
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
+
 
 class EventDetailFragment : Fragment() {
 
@@ -119,7 +121,7 @@ class EventDetailFragment : Fragment() {
 
         eventId?.let { id ->
             viewLifecycleOwner.lifecycleScope.launch {
-                favoriteViewModel.isFavorite(id).observe(viewLifecycleOwner) { isFav ->
+                favoriteViewModel.isFavorite(id).collectLatest { isFav ->
                     isFavorite = isFav
                     updateFavoriteIcon(isFav)
                 }

@@ -95,31 +95,7 @@ class FinishedFragment : Fragment() {
                 }
             }
         }
-
         finishedViewModel.getFinishedEvents()
-//        finishedViewModel.apply {
-//            listEvent.observe(viewLifecycleOwner) { events ->
-//                binding?.apply {
-//                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
-//                    adapter.submitList(events)
-//                }
-//            }
-//
-//            isLoading.observe(viewLifecycleOwner) { isLoading ->
-//                binding?.let { SharedMethod.showLoading(isLoading, it.progressBar) }
-//            }
-//
-//            errorMessage.observe(viewLifecycleOwner) { message ->
-//                message?.let {
-//                    SharedMethod.showErrorDialog(
-//                        context = requireContext(),
-//                        message = it,
-//                        customEvent = { finishedViewModel.getEvent() }
-//                    )
-//                    finishedViewModel.clearErrorMessage()
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {

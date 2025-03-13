@@ -78,29 +78,6 @@ class UpcomingFragment : Fragment() {
         }
 
         upcomingViewModel.getUpcomingEvents()
-//        upcomingViewModel.apply {
-//            listEvent.observe(viewLifecycleOwner) { events ->
-//                binding?.apply {
-//                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
-//                    adapter.submitList(events)
-//                }
-//            }
-//
-//            isLoading.observe(viewLifecycleOwner) {
-//                binding?.progressBar?.let { progressBar -> SharedMethod.showLoading(it, progressBar) }
-//            }
-//
-//            errorMessage.observe(viewLifecycleOwner) { message ->
-//                message?.let {
-//                    SharedMethod.showErrorDialog(
-//                        context = requireContext(),
-//                        message = it,
-//                        customEvent = { getEvent() }
-//                    )
-//                    clearErrorMessage()
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {

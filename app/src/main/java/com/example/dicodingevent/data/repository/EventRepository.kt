@@ -69,7 +69,6 @@ class EventRepository(
         }
     }
 
-
     suspend fun getEventById(eventId: String): Flow<Result<Event>> = flow {
         emit(Result.Loading)
         try {
@@ -89,7 +88,6 @@ class EventRepository(
         }
     }
 
-//    fun getAllFavorites() = favoriteDao.getAllFavorites()
     fun getAllFavorites(): Flow<List<FavoriteEventEntity>> = favoriteDao.getAllFavorites()
 
     suspend fun addFavorite(event: FavoriteEventEntity) {
@@ -100,6 +98,5 @@ class EventRepository(
         favoriteDao.removeFavorite(event)
     }
 
-//    fun isFavorite(eventId: String) = favoriteDao.isFavorite(eventId)
     fun isFavorite(eventId: String): Flow<Boolean> = favoriteDao.isFavorite(eventId)
 }

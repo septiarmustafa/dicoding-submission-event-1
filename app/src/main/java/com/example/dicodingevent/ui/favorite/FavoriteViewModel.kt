@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.local.entity.FavoriteEventEntity
 import com.example.dicodingevent.data.repository.EventRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(application: Application,  private val eventRepository: EventRepository) : AndroidViewModel(application) {
@@ -24,7 +25,7 @@ class FavoriteViewModel(application: Application,  private val eventRepository: 
         }
     }
 
-    fun isFavorite(eventId: String): LiveData<Boolean> {
+    fun isFavorite(eventId: String): Flow<Boolean> {
         return eventRepository.isFavorite(eventId)
     }
 }

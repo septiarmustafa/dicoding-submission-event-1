@@ -113,40 +113,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-//        homeViewModel.apply {
-//            upcomingEvents.observe(viewLifecycleOwner) { events ->
-//                binding?.apply {
-//                    tvUpcomingEvents.text = if (events.isNullOrEmpty()) {
-//                        getString(R.string.no_upcoming_event_available)
-//                    } else {
-//                        getString(R.string.upcoming_events)
-//                    }
-//                    upcomingAdapter.submitList(events)
-//                }
-//            }
-//
-//            finishedEvents.observe(viewLifecycleOwner) { events ->
-//                binding?.apply {
-//                    ivEmptyState.visibility = if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
-//                    finishedAdapter.submitList(events)
-//                }
-//            }
-//
-//            isLoading.observe(viewLifecycleOwner) {
-//                binding?.progressBar?.let { progressBar -> SharedMethod.showLoading(it, progressBar) }
-//            }
-//
-//            errorMessage.observe(viewLifecycleOwner) { message ->
-//                message?.let {
-//                    SharedMethod.showErrorDialog(
-//                        context = requireContext(),
-//                        message = it,
-//                        customEvent = { loadAllEvents() }
-//                    )
-//                    clearErrorMessage()
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {
