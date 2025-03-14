@@ -6,7 +6,7 @@ import com.example.dicodingevent.data.remote.retrofit.ApiConfig
 import com.example.dicodingevent.data.remote.retrofit.EventService
 import com.example.dicodingevent.data.repository.EventRepository
 
-class AppContainer(private val context: Context) {
+class AppContainer(context: Context) {
     private val eventService: EventService = ApiConfig.getApiService()
     private val favoriteDao = FavoriteDatabase.getDatabase(context).favoriteDao()
     val eventRepository: EventRepository = EventRepository(eventService, favoriteDao)
