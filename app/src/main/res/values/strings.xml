@@ -23,4 +23,7 @@
     <string name="remove_from_favorite">Remove from favorite</string>
     <string name="love">Love</string>
     <string name="favorite_events">Favorite Events</string>
+    <string name="enable_notification">Enable notification</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="enable_dark_mode">Enable dark mode</string>
 </resources>
