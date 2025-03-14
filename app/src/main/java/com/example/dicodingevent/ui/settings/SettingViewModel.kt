@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -31,27 +30,25 @@ class SettingViewModel(private val settingRepository: SettingsRepository) : View
             saveReminderSetting(isEnabled)
 
             val workManager = WorkManager.getInstance(context)
+            workManager.cancelAllWork()
 
             if (isEnabled) {
                 val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS)
                     .setInitialDelay(0, TimeUnit.MILLISECONDS)
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiresBatteryNotLow(true)
-                            .setRequiresCharging(false)
-                            .setRequiresDeviceIdle(false)
-                            .build()
-                    )
                     .build()
 
                 workManager.enqueueUniquePeriodicWork(
-                    "daily_reminder_work",
+                    UNIQUE_WORK_NAME,
                     ExistingPeriodicWorkPolicy.REPLACE,
                     workRequest
                 )
             } else {
-                workManager.cancelUniqueWork("daily_reminder_work")
+                workManager.cancelUniqueWork(UNIQUE_WORK_NAME)
             }
         }
+    }
+
+    companion object {
+        const val UNIQUE_WORK_NAME = "DAILY_REMINDER_WORK_NAME"
     }
 }
