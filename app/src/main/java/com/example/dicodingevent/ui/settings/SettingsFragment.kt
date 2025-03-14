@@ -23,14 +23,28 @@ class SettingsFragment : Fragment() {
     ): View? {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        viewModel.themeSetting.observe(viewLifecycleOwner) { isDarkMode ->
-            binding?.switchTheme?.isChecked = isDarkMode
+        viewModel.apply {
+            themeSetting.observe(viewLifecycleOwner) { isDarkMode ->
+                binding?.smSwitchTheme?.isChecked = isDarkMode
+            }
+            reminderSetting.observe(viewLifecycleOwner) { isEnabled ->
+                binding?.smSwitchReminder?.isChecked = isEnabled
+                if (isEnabled) {
+                    context?.let {
+                        viewModel.scheduleDailyReminder(it, true)
+                    }
+                }
+            }
         }
 
-        binding?.switchTheme?.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveThemeSetting(isChecked)
+        binding?.apply {
+            smSwitchTheme.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.saveThemeSetting(isChecked)
+            }
+            smSwitchReminder.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.scheduleDailyReminder(requireContext(), isChecked)
+            }
         }
-
         return binding?.root
     }
 

@@ -15,13 +15,23 @@ class SettingsRepository(context: Context) {
     val themeSetting: Flow<Boolean> = dataStore.data
         .map { preferences -> preferences[THEME_KEY] ?: false }
 
+    val reminderSetting: Flow<Boolean> = dataStore.data
+        .map { preferences -> preferences[REMINDER_KEY] ?: false }
+
     suspend fun saveThemeSetting(isDarkMode: Boolean) {
         dataStore.edit { preferences ->
             preferences[THEME_KEY] = isDarkMode
         }
     }
 
+    suspend fun saveReminderSetting(isEnabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[REMINDER_KEY] = isEnabled
+        }
+    }
+
     companion object {
         val THEME_KEY = booleanPreferencesKey("theme_setting")
+        val REMINDER_KEY = booleanPreferencesKey("daily_reminder_enabled")
     }
 }

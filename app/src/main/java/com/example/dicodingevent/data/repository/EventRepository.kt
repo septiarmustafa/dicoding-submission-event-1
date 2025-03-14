@@ -28,7 +28,7 @@ class EventRepository(
         }
     }
 
-    suspend fun getFinishedEvents(query: String? = null): Flow<Result<List<Event>>> = flow  {
+    suspend fun getFinishedEvents(query: String? = null): Flow<Result<List<Event>>> = flow {
         emit(Result.Loading)
         try {
             val response = eventService.getEvent(EventType.FINISHED.value, q = query)
@@ -42,7 +42,8 @@ class EventRepository(
         }
     }
 
-    suspend fun getFinishedEventsHome(): Flow<Result<List<Event>>> = flow{ emit(Result.Loading)
+    suspend fun getFinishedEventsHome(): Flow<Result<List<Event>>> = flow {
+        emit(Result.Loading)
         try {
             val response = eventService.getEvent(EventType.FINISHED.value, limit = "5")
             if (response.isSuccessful) {
@@ -82,6 +83,21 @@ class EventRepository(
                 }
             } else {
                 emit(Result.Error("Failed to fetch event: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "An unexpected error occurred"))
+        }
+    }
+
+    suspend fun getNearestActiveEvent(): Flow<Result<Event?>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = eventService.getNearestActiveEvent()
+            if (response.isSuccessful) {
+                val event = response.body()?.listEvents?.firstOrNull()
+                emit(Result.Success(event))
+            } else {
+                emit(Result.Error("Failed to fetch active event: ${response.message()}"))
             }
         } catch (e: Exception) {
             emit(Result.Error(e.message ?: "An unexpected error occurred"))

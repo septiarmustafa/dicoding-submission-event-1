@@ -19,4 +19,10 @@ interface EventService {
     suspend fun getEventById(
         @Path("id") id: String
     ) : Response<EventDetailResponse>
+
+    @GET("events")
+    suspend fun getNearestActiveEvent(
+        @Query("active") active: Int = -1,
+        @Query("limit") limit: Int = 1
+    ): Response<ListEventResponse>
 }
