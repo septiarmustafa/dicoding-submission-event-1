@@ -17,6 +17,7 @@ class SettingsFragment : Fragment() {
     private val viewModel: SettingViewModel by viewModels {
         SettingViewModelFactory(SettingsRepository(requireContext()))
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,11 +30,6 @@ class SettingsFragment : Fragment() {
             }
             reminderSetting.observe(viewLifecycleOwner) { isEnabled ->
                 binding?.smSwitchReminder?.isChecked = isEnabled
-                if (isEnabled) {
-                    context?.let {
-                        viewModel.scheduleDailyReminder(it, true)
-                    }
-                }
             }
         }
 

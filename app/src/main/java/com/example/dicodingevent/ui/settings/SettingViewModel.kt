@@ -30,7 +30,6 @@ class SettingViewModel(private val settingRepository: SettingsRepository) : View
             saveReminderSetting(isEnabled)
 
             val workManager = WorkManager.getInstance(context)
-            workManager.cancelAllWork()
 
             if (isEnabled) {
                 val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS)
