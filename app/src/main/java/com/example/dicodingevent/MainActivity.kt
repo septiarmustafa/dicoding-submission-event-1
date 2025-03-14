@@ -1,21 +1,20 @@
 package com.example.dicodingevent
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.dicodingevent.data.repository.SettingsRepository
 import com.example.dicodingevent.databinding.ActivityMainBinding
 import com.example.dicodingevent.di.SettingViewModelFactory
-import com.example.dicodingevent.data.repository.SettingsRepository
 import com.example.dicodingevent.ui.settings.SettingViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         setupNavigation()
 
