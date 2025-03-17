@@ -44,11 +44,7 @@ class FavoriteFragment : Fragment() {
 
 
         viewModel.favoriteEventsEntity.observe(viewLifecycleOwner) { events ->
-            if (events.isNullOrEmpty()) {
-                binding?.ivEmptyState?.visibility = View.VISIBLE
-            } else {
-                binding?.ivEmptyState?.visibility = View.GONE
-            }
+            if (events.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapter.submitList(events)
         }
 

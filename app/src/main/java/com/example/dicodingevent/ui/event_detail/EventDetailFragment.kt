@@ -165,11 +165,10 @@ class EventDetailFragment : Fragment() {
     }
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
-        if (isFavorite) {
-            binding?.ivLoveButton?.setImageResource(R.drawable.ic_favorite_24)
-        } else {
-            binding?.ivLoveButton?.setImageResource(R.drawable.ic_favorite_border_24)
-        }
+        binding?.ivLoveButton?.setImageResource(
+            if (isFavorite) R.drawable.ic_favorite_24
+            else R.drawable.ic_favorite_border_24
+        )
     }
 
     override fun onDestroyView() {
