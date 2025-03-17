@@ -40,7 +40,7 @@ class UpcomingFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        adapter = EventAdapter(false){ event ->
+        adapter = EventAdapter(false) { event ->
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
@@ -57,14 +57,17 @@ class UpcomingFragment : Fragment() {
                     is Result.Loading -> {
                         binding?.let { SharedMethod.showLoading(true, it.progressBar) }
                     }
+
                     is Result.Success -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         val eventList = result.data
                         binding?.apply {
-                            ivEmptyState.visibility = if (eventList.isEmpty()) View.VISIBLE else View.GONE
+                            ivEmptyState.visibility =
+                                if (eventList.isEmpty()) View.VISIBLE else View.GONE
                             adapter.submitList(eventList)
                         }
                     }
+
                     is Result.Error -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         SharedMethod.showErrorDialog(

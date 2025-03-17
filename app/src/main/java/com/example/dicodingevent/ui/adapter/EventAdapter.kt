@@ -12,9 +12,10 @@ import com.example.dicodingevent.data.remote.model.Event
 import com.example.dicodingevent.databinding.ItemEventHorizontalBinding
 import com.example.dicodingevent.databinding.ItemEventVerticalBinding
 
-class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick: (Event) -> Unit) : ListAdapter<Event, EventAdapter.EventViewHolder>(
-    DIFF_CALLBACK
-) {
+class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick: (Event) -> Unit) :
+    ListAdapter<Event, EventAdapter.EventViewHolder>(
+        DIFF_CALLBACK
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return if (isVerticalItem) {
@@ -41,7 +42,8 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
     sealed class EventViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
         abstract fun bind(event: Event, onClick: (Event) -> Unit)
 
-        class FinishedViewHolder(private val binding: ItemEventVerticalBinding) : EventViewHolder(binding) {
+        class FinishedViewHolder(private val binding: ItemEventVerticalBinding) :
+            EventViewHolder(binding) {
             override fun bind(event: Event, onClick: (Event) -> Unit) {
                 binding.apply {
                     tvEventTitle.text = event.name
@@ -58,7 +60,8 @@ class EventAdapter(private val isVerticalItem: Boolean, private val onItemClick:
             }
         }
 
-        class UpcomingViewHolder(private val binding: ItemEventHorizontalBinding) : EventViewHolder(binding) {
+        class UpcomingViewHolder(private val binding: ItemEventHorizontalBinding) :
+            EventViewHolder(binding) {
             override fun bind(event: Event, onClick: (Event) -> Unit) {
                 binding.apply {
                     tvEventTitle.text = event.name

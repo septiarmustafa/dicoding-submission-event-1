@@ -33,7 +33,8 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
                         _upcomingEvents.value = result
                     }
                 } catch (e: Exception) {
-                    _upcomingEvents.value = Result.Error(e.message ?: "Failed to load upcoming events")
+                    _upcomingEvents.value =
+                        Result.Error(e.message ?: "Failed to load upcoming events")
                 }
             }
 
@@ -43,7 +44,8 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
                         _finishedEvents.value = result
                     }
                 } catch (e: Exception) {
-                    _finishedEvents.value = Result.Error(e.message ?: "Failed to load finished events")
+                    _finishedEvents.value =
+                        Result.Error(e.message ?: "Failed to load finished events")
                 }
             }
         }

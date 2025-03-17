@@ -36,7 +36,7 @@ class EventDetailFragment : Fragment() {
     private val eventDetailViewModel: EventDetailViewModel by viewModels {
         ViewModelFactory(appContainer.eventRepository)
     }
-    private val favoriteViewModel: FavoriteViewModel by viewModels{
+    private val favoriteViewModel: FavoriteViewModel by viewModels {
         ViewModelFactory(appContainer.eventRepository, requireActivity().application)
     }
     private var eventId: String? = null
@@ -58,7 +58,7 @@ class EventDetailFragment : Fragment() {
         eventId?.let {
             setupObservers()
             eventDetailViewModel.getEventDetail(it)
-        } ?:   SharedMethod.showErrorDialog(
+        } ?: SharedMethod.showErrorDialog(
             context = requireContext(),
             message = "Event ID is missing",
             customEvent = { eventId?.let { eventDetailViewModel.getEventDetail(it) } }
@@ -90,6 +90,7 @@ class EventDetailFragment : Fragment() {
                     is Result.Loading -> {
                         binding?.let { SharedMethod.showLoading(true, it.progressBar) }
                     }
+
                     is Result.Success -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         result.data.let { event: Event ->
@@ -102,17 +103,28 @@ class EventDetailFragment : Fragment() {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                                     startActivity(intent)
                                 } else {
-                                    Toast.makeText(context, "Invalid or missing URL", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Invalid or missing URL",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
                     }
+
                     is Result.Error -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         SharedMethod.showErrorDialog(
                             context = requireContext(),
                             message = result.error,
-                            customEvent = { eventId?.let { id -> eventDetailViewModel.getEventDetail(id) } }
+                            customEvent = {
+                                eventId?.let { id ->
+                                    eventDetailViewModel.getEventDetail(
+                                        id
+                                    )
+                                }
+                            }
                         )
                     }
                 }
@@ -139,9 +151,11 @@ class EventDetailFragment : Fragment() {
             tvEventCategory.text = event.category
             tvEventCity.text = event.cityName
             tvEventDescription.text = event.summary
-            tvEventTime.text = "${DateUtils.formatToId(event.beginTime ?: "")} - ${DateUtils.formatToId(event.endTime ?: "")}"
-            tvEventQuota.text =  "Quota: ${quota - registrants}"
-            tvEventDescription.text = HtmlCompat.fromHtml(event.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            tvEventTime.text =
+                "${DateUtils.formatToId(event.beginTime ?: "")} - ${DateUtils.formatToId(event.endTime ?: "")}"
+            tvEventQuota.text = "Quota: ${quota - registrants}"
+            tvEventDescription.text =
+                HtmlCompat.fromHtml(event.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             Glide.with(this@EventDetailFragment)
                 .load(event.mediaCover)

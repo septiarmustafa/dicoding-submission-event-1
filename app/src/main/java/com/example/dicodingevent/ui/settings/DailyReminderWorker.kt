@@ -40,15 +40,20 @@ class DailyReminderWorker(
                     is Res.Loading -> {
                         result = Result.retry()
                     }
+
                     is Res.Success -> {
                         val event = eventResult.data
                         if (event != null) {
-                            sendNotification(event.name ?: "Unknown Event", DateUtils.formatToEn(event.beginTime ?: ""))
+                            sendNotification(
+                                event.name ?: "Unknown Event",
+                                DateUtils.formatToEn(event.beginTime ?: "")
+                            )
                             result = Result.success()
                         } else {
                             result = Result.failure()
                         }
                     }
+
                     is Res.Error -> {
                         result = Result.failure()
                     }

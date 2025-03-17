@@ -13,12 +13,12 @@ interface EventService {
         @Query("active") active: String,
         @Query("limit") limit: String? = "40",
         @Query("q") q: String? = null
-    ) : Response<ListEventResponse>
+    ): Response<ListEventResponse>
 
     @GET("/events/{id}")
     suspend fun getEventById(
         @Path("id") id: String
-    ) : Response<EventDetailResponse>
+    ): Response<EventDetailResponse>
 
     @GET("events")
     suspend fun getNearestActiveEvent(

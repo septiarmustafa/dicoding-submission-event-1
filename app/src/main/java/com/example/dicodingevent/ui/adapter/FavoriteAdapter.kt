@@ -16,7 +16,8 @@ class FavoriteAdapter(
 ) : ListAdapter<FavoriteEventEntity, FavoriteAdapter.FavoriteViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val binding = ItemFavoriteEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemFavoriteEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoriteViewHolder(binding)
     }
 
@@ -25,7 +26,8 @@ class FavoriteAdapter(
         holder.bind(event)
     }
 
-    inner class FavoriteViewHolder(private val binding: ItemFavoriteEventBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
+    inner class FavoriteViewHolder(private val binding: ItemFavoriteEventBinding) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         fun bind(event: FavoriteEventEntity) {
             binding.apply {
                 tvEventTitle.text = event.title
@@ -42,11 +44,17 @@ class FavoriteAdapter(
     }
 
     class DiffCallback : DiffUtil.ItemCallback<FavoriteEventEntity>() {
-        override fun areItemsTheSame(oldItem: FavoriteEventEntity, newItem: FavoriteEventEntity): Boolean {
+        override fun areItemsTheSame(
+            oldItem: FavoriteEventEntity,
+            newItem: FavoriteEventEntity
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: FavoriteEventEntity, newItem: FavoriteEventEntity): Boolean {
+        override fun areContentsTheSame(
+            oldItem: FavoriteEventEntity,
+            newItem: FavoriteEventEntity
+        ): Boolean {
             return oldItem == newItem
         }
     }

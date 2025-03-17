@@ -42,16 +42,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        upcomingAdapter = EventAdapter(true){ event ->
+        upcomingAdapter = EventAdapter(true) { event ->
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
-        finishedAdapter = EventAdapter(false){ event ->
+        finishedAdapter = EventAdapter(false) { event ->
             SharedMethod.navigateToEventDetail(this, event.id.toString())
         }
 
         binding?.apply {
             rvUpcomingEventsHome.apply {
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = upcomingAdapter
             }
 
@@ -69,6 +70,7 @@ class HomeFragment : Fragment() {
                     is Result.Loading -> {
                         binding?.let { SharedMethod.showLoading(true, it.progressBar) }
                     }
+
                     is Result.Success -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         val eventList = result.data
@@ -79,6 +81,7 @@ class HomeFragment : Fragment() {
                         }
                         upcomingAdapter.submitList(eventList)
                     }
+
                     is Result.Error -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         SharedMethod.showErrorDialog(
@@ -95,13 +98,17 @@ class HomeFragment : Fragment() {
             homeViewModel.finishedEvents.collect { result ->
                 when (result) {
                     is Result.Loading -> {
-                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }                    }
+                        binding?.let { SharedMethod.showLoading(true, it.progressBar) }
+                    }
+
                     is Result.Success -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         val eventList = result.data
-                        binding?.ivEmptyState?.visibility = if (eventList.isEmpty()) View.VISIBLE else View.GONE
+                        binding?.ivEmptyState?.visibility =
+                            if (eventList.isEmpty()) View.VISIBLE else View.GONE
                         finishedAdapter.submitList(eventList)
                     }
+
                     is Result.Error -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         SharedMethod.showErrorDialog(

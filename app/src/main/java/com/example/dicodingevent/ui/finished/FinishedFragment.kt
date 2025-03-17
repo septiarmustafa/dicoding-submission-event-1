@@ -46,7 +46,8 @@ class FinishedFragment : Fragment() {
         }
 
         binding?.apply {
-            rvFinishedEvents.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            rvFinishedEvents.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             rvFinishedEvents.adapter = adapter
         }
     }
@@ -58,7 +59,8 @@ class FinishedFragment : Fragment() {
                 svEventSearch.requestFocus()
             }
 
-            svEventSearch.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            svEventSearch.setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
@@ -76,14 +78,17 @@ class FinishedFragment : Fragment() {
                     is Result.Loading -> {
                         binding?.let { SharedMethod.showLoading(true, it.progressBar) }
                     }
+
                     is Result.Success -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         val eventList = result.data
                         binding?.apply {
-                            ivEmptyState.visibility = if (eventList.isEmpty()) View.VISIBLE else View.GONE
+                            ivEmptyState.visibility =
+                                if (eventList.isEmpty()) View.VISIBLE else View.GONE
                             adapter.submitList(eventList)
                         }
                     }
+
                     is Result.Error -> {
                         binding?.let { SharedMethod.showLoading(false, it.progressBar) }
                         SharedMethod.showErrorDialog(

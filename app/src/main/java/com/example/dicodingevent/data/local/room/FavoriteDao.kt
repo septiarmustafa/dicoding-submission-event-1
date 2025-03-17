@@ -20,5 +20,5 @@ interface FavoriteDao {
     fun getAllFavorites(): Flow<List<FavoriteEventEntity>>
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_events WHERE id = :eventId)")
-    fun isFavorite(eventId: String):  Flow<Boolean>
+    fun isFavorite(eventId: String): Flow<Boolean>
 }

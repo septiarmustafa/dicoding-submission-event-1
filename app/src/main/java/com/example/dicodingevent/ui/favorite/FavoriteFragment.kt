@@ -19,7 +19,7 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding
     private val appContainer by lazy { AppContainer(requireContext()) }
     private val viewModel: FavoriteViewModel by viewModels {
-        ViewModelFactory( appContainer.eventRepository, requireActivity().application)
+        ViewModelFactory(appContainer.eventRepository, requireActivity().application)
     }
     private lateinit var adapter: FavoriteAdapter
 

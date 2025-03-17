@@ -31,7 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val preferences = SettingsRepository(this)
-        settingViewModel = ViewModelProvider(this, SettingViewModelFactory(preferences))[SettingViewModel::class.java]
+        settingViewModel = ViewModelProvider(
+            this,
+            SettingViewModelFactory(preferences)
+        )[SettingViewModel::class.java]
 
         settingViewModel.themeSetting.observe(this) { isDarkMode ->
             AppCompatDelegate.setDefaultNightMode(
@@ -51,14 +54,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_finished,
                 R.id.navigation_favorite,
                 R.id.navigation_setting,
-                )
+            )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
     private fun setupNavigation() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
         setupActionBarWithNavController(navController, appBarConfiguration)

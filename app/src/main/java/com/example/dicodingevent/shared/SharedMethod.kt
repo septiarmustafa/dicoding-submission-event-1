@@ -52,10 +52,22 @@ object SharedMethod {
         val navController = fragment.findNavController()
 
         val action = when (fragment) {
-            is HomeFragment -> HomeFragmentDirections.actionNavigationHomeToEventDetailFragment(eventId)
-            is FavoriteFragment -> FavoriteFragmentDirections.actionNavigationFavoriteToEventDetailFragment(eventId)
-            is UpcomingFragment -> UpcomingFragmentDirections.actionNavigationUpcomingToEventDetailFragment(eventId)
-            is FinishedFragment -> FinishedFragmentDirections.actionNavigationFinishedToEventDetailFragment(eventId)
+            is HomeFragment -> HomeFragmentDirections.actionNavigationHomeToEventDetailFragment(
+                eventId
+            )
+
+            is FavoriteFragment -> FavoriteFragmentDirections.actionNavigationFavoriteToEventDetailFragment(
+                eventId
+            )
+
+            is UpcomingFragment -> UpcomingFragmentDirections.actionNavigationUpcomingToEventDetailFragment(
+                eventId
+            )
+
+            is FinishedFragment -> FinishedFragmentDirections.actionNavigationFinishedToEventDetailFragment(
+                eventId
+            )
+
             else -> null
         }
 

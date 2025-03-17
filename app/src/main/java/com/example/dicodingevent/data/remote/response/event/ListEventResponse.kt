@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName
 data class ListEventResponse(
 
     @field:SerializedName("commonResponse")
-	val commonResponse: CommonResponse,
+    val commonResponse: CommonResponse,
 
     @field:SerializedName("listEvents")
-	val listEvents: List<Event>? = listOf()
+    val listEvents: List<Event>? = listOf()
 
-	)
+)
 

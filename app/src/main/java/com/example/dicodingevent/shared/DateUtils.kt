@@ -26,12 +26,12 @@ class DateUtils {
             }
         }
 
-        fun formatToId(date: String) : String{
-           return convert(dateTime = date, outputDate = ID_OUTPUT_FORMAT)
+        fun formatToId(date: String): String {
+            return convert(dateTime = date, outputDate = ID_OUTPUT_FORMAT)
         }
 
         fun formatToEn(date: String): String {
-            return convert(dateTime = date, locale = EN_LOCALE, outputDate = EN_OUTPUT_FORMAT )
+            return convert(dateTime = date, locale = EN_LOCALE, outputDate = EN_OUTPUT_FORMAT)
         }
     }
 }
