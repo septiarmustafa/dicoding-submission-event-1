@@ -11,6 +11,7 @@ import androidx.work.WorkManager
 import com.example.dicodingevent.data.repository.SettingsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 class SettingViewModel(private val settingRepository: SettingsRepository) : ViewModel() {
@@ -31,9 +32,24 @@ class SettingViewModel(private val settingRepository: SettingsRepository) : View
 
             val workManager = WorkManager.getInstance(context)
 
+            val currentTime = System.currentTimeMillis()
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = currentTime
+                set(Calendar.HOUR_OF_DAY, 7) // Atur jam 07:00 pagi
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+            }
+
+            var delay = calendar.timeInMillis - currentTime
+            if (delay < 0) {
+                // Jika sudah lewat jam 07:00 hari ini, set untuk besok
+                delay += TimeUnit.DAYS.toMillis(1)
+            }
+
+
             if (isEnabled) {
                 val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS)
-                    .setInitialDelay(0, TimeUnit.MILLISECONDS)
+                    .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                     .build()
 
                 workManager.enqueueUniquePeriodicWork(
